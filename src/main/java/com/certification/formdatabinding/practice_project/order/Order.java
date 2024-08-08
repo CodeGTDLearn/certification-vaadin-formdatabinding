@@ -1,10 +1,9 @@
-package com.certification.formdatabinding.views.formdatabind.practice;
+package com.certification.formdatabinding.practice_project.order;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-
 
 @Getter
 @Setter
