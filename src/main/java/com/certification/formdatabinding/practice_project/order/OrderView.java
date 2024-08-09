@@ -14,13 +14,13 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.validator.EmailValidator;
-import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 
 import java.time.LocalDate;
 
 import static com.certification.formdatabinding.practice_project.config.AppRoutes.ORDERS_ROUTE;
+import static com.certification.formdatabinding.practice_project.config.AppViewTitles.ORDER_VIEW_TITLE;
 
 @Route(value = ORDERS_ROUTE, layout = MainView.class)
 @RouteAlias(value = "", layout = MainView.class)
@@ -31,25 +31,27 @@ public class OrderView extends VerticalLayout {
   private EmailField emailField;
   private IntegerField quantityField;
   private DatePicker deliveryDateField;
-  Select<String> categorySelector;
+  Select<String> categorySelectorField;
 
   public OrderView() {
+
     createOrderForm();
-    applyBinderInOrderForm();
+    bind_WithValidators_formFields();
   }
 
   private void createOrderForm() {
 
-    H2 title = new H2("Order Form");
+    H2 title = new H2(ORDER_VIEW_TITLE);
+
     nameField = new TextField("Customer Name");
     emailField = new EmailField("Customer Email");
     deliveryDateField = new DatePicker("Delivery Date", LocalDate.now());
     quantityField = new IntegerField("Quantity");
     quantityField.setValue(0);
 
-    categorySelector = new Select<>();
-    categorySelector.setLabel("Product Category");
-    categorySelector.setItems("Electronics", "Clothing", "Food", "Books");
+    categorySelectorField = new Select<>();
+    categorySelectorField.setLabel("Product Category");
+    categorySelectorField.setItems("Electronics", "Clothing", "Food", "Books");
 
     var formLayout = new FormLayout();
 
@@ -58,7 +60,7 @@ public class OrderView extends VerticalLayout {
          nameField,
          emailField,
          quantityField,
-         categorySelector,
+         categorySelectorField,
          deliveryDateField
     );
 
@@ -68,7 +70,6 @@ public class OrderView extends VerticalLayout {
               new FormLayout.ResponsiveStep("500px", 2)
          );
 
-    // Step 5: Create submit button and processing logic
     Button submitOrder = new Button("Submit Order", event -> {
       try {
         Order order = new Order();
@@ -87,47 +88,55 @@ public class OrderView extends VerticalLayout {
     add(formLayout, submitOrder);
   }
 
-  private void applyBinderInOrderForm() {
+  private void bind_WithValidators_formFields() {
 
-    // Step 4: Configure validations
     binder
-         .forField(nameField)
-         .withValidator(
-              new StringLengthValidator(
-                   "Name must be between 3 and 50 characters",
-                   3,
-                   50
-              )
-         )
-         .bind(Order::getCustomerName, Order::setCustomerName);
+         // Style 01:
+         // Permitido pelo 'new Binder<>(Order.class)'
+         // Permitido na AUSENCIA de "Validators"
+         .bind(nameField, "customerName");
 
     binder
          .forField(emailField)
          .withValidator(new EmailValidator("Invalid email address"))
-         .bind(Order::getCustomerEmail, Order::setCustomerEmail);
+
+         // Style 02:
+         // Permitido pelo 'new Binder<>(Order.class)'
+         .bind("customerEmail");
 
     binder
          .forField(quantityField)
-         .withValidator(quantity -> quantity > 0, "Quantity must be greater than zero")
+         .withValidator(quantity -> quantity > 0, "must be greater than zero")
+
+         // Style 03:
+         // Permitido pelo 'new Binder<>(Order.class)' or 'new Binder<>()'
          .bind(Order::getProductQuantity, Order::setProductQuantity);
 
-    binder
-         .forField(categorySelector)
-         .asRequired("Product category is required")
-         .bind(Order::getProductCategory, Order::setProductCategory);
+    binder.bind(
+         categorySelectorField,
+         order -> order.getProductCategory(),
+         (oldCategory, newCategory) -> oldCategory.setProductCategory(newCategory)
+    );
 
     binder
          .forField(deliveryDateField)
+         .asRequired("Delivery Date required")
          .withValidator(
               date -> date.isAfter(LocalDate.now()),
               "Delivery date must be in the future"
          )
-         .bind(Order::getDeliveryDate, Order::setDeliveryDate);
+         .bind("deliveryDate");
   }
 
   private void processOrder(Order order) {
     // Simulating order processing
-    final String text = "Order processed successfully!";
+    final String text =
+         "Order processed %s - Quantity %s!"
+              .formatted(
+                   nameField.getValue(),
+                   quantityField.getValue()
+                                .toString()
+              );
 
     Notification.show(text, 3000, Notification.Position.MIDDLE);
   }
