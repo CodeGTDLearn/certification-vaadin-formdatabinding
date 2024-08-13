@@ -34,9 +34,12 @@ public class CustomerView extends VerticalLayout {
 
     customer.setAddress(address);
 
-    H2 viewTitle = new H2(CUSTOMER_VIEW_TITLE);
 
+    H2 viewTitle = new H2(CUSTOMER_VIEW_TITLE);
     var customerForm = createCustomerForm();
+
+    addressBinder();
+    customerBinder();
 
     add(viewTitle, customerForm);
   }
@@ -53,21 +56,27 @@ public class CustomerView extends VerticalLayout {
     postalCodeField = new TextField("Postal Code");
     cityField = new TextField("City");
 
-    final String output = "Data Saved: %s %n %s %n %s %n %s".formatted(
-         customer.getFirstName(),
-         customer.getLastName(),
-         customer.getAddress()
-                 .getStreetAddress(),
-         customer.getAddress()
-                 .getCity()
-    );
 
     Button saveButton = new Button("Save");
+
     saveButton
          .addClickListener(event -> {
-           if (binder.writeBeanIfValid(customer)) Notification.show(output);
-           else Notification.show("Please complete the form.");
+           if (binder.writeBeanIfValid(customer)) {
+             Notification.show(
+                  "Data Saved: %s %n %s %n %s %n %s %n %s"
+                       .formatted(
+                            customer.getFirstName(),
+                            customer.getLastName(),
+                            customer.getEmail(),
+                            customer.getAddress()
+                                    .getStreetAddress(),
+                            customer.getAddress()
+                                    .getCity()
+                       )
+             );
+           } else Notification.show("Please complete the form.");
          });
+
 
     form.add(
          firstNameField,
@@ -84,6 +93,7 @@ public class CustomerView extends VerticalLayout {
     return column;
   }
 
+  //@formatter:off
   private void customerBinder() {
 
     // Bind dos campos de texto aos atributos da classe Customer
@@ -95,40 +105,64 @@ public class CustomerView extends VerticalLayout {
     binder
          .forField(lastNameField)
          .asRequired("Last name is required")
+         .withValidator(lastName -> lastName.length() >= 3, "min. 3 characters")
          .bind(Customer::getLastName, Customer::setLastName);
 
     binder
          .forField(emailField)
-         .asRequired("Email is required")
-         .withValidator(email -> email.contains("@"), "Invalid email address")
+         .asRequired()
+         .withValidationStatusHandler(status -> {
+           Notification.show("Email is required", 3000, Notification.Position.MIDDLE);
+         })
          .bind(Customer::getEmail, Customer::setEmail);
   }
 
   private void addressBinder() {
 
+    // Style 06:
     // Bind dos campos de texto aos atributos da classe Address
-    binder.forField(streetAddressField)
-          .asRequired("Street address is required")
-          .bind(customer1 -> customer1.getAddress()
-                                      .getStreetAddress(),
-                (customer1, street) -> customer1.getAddress()
-                                                .setStreetAddress(street)
-          );
+    binder
+         .forField(streetAddressField)
+         .asRequired("Street address is required")
+         .bind("address.streetAddress");
 
+    // Style 07: NOT NULL-SAFETY
     binder.forField(postalCodeField)
           .asRequired("Postal code is required")
-          .bind(customer1 -> customer1.getAddress()
-                                      .getPostalCode(),
-                (customer1, postal) -> customer1.getAddress()
-                                                .setPostalCode(postal)
+          .bind(
+
+               // GETTER => Customer::getAddress -> getPostalCode
+               customer1 -> customer1.getAddress().getPostalCode(),
+
+               // SETTER => Customer::getAddress -> setPostalCode
+               (customerToBind, fieldContent) ->
+                    customerToBind.getAddress().setPostalCode(fieldContent)
           );
 
-    binder.forField(cityField)
-          .asRequired("City is required")
-          .bind(customer1 -> customer1.getAddress()
-                                      .getCity(),
-                (customer1, city) -> customer1.getAddress()
-                                              .setCity(city)
-          );
+    // Style 07.1: Applying NULL-SAFETY
+    // Lambda Custom Validator - Checking Null
+    binder
+         .forField(cityField)
+         .bind(
+
+              // GETTER => Customer::getAddress -> getCity
+              customer -> {
+                return customer.getAddress() == null
+                     ? null
+                     : customer.getAddress().getCity();
+              },
+
+              // Lambda Custom Validator: IF cityField is not BLANK
+              // SETTER => Customer::getAddress -> setCity
+              (customer, fieldContent) -> {
+                if (customer.getAddress() != null)
+                  customer.getAddress().setCity(fieldContent);
+
+                if (fieldContent.isBlank())
+                  customer.getAddress().setCity("Check the 'Postal-Code City'");
+                else customer.getAddress().setCity(fieldContent);
+              }
+         );
   }
+  //@formatter:on
 }

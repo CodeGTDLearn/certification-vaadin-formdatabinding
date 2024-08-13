@@ -10,6 +10,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.PropertyId;
+import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
@@ -21,13 +22,13 @@ import static com.certification.formdatabinding.practice_project.config.AppViewT
 @Route(value = ADDRESS_VIEW_ROUTE, layout = MainView.class)
 public class AddressView extends VerticalLayout {
 
-  //  Automatic Binding by Entity-Attribute name
+  //  Automatic Binding according Entity-Attribute name
   private TextField streetAddress = new TextField();
 
   @PropertyId("city")
   private TextField cityField = new TextField();
 
-  //  Automatic Binding by Entity-Attribute name
+  //  Automatic Binding according Entity-Attribute name
   private TextField postalCode = new TextField();
 
   private Binder<Address> binder = new Binder<>(Address.class);
@@ -35,6 +36,7 @@ public class AddressView extends VerticalLayout {
   private final Grid<Address> grid = new Grid<>(Address.class);
 
   private List<Address> listAdress = new ArrayList<>();
+
   private Address address = new Address();
 
   public AddressView() {
@@ -42,19 +44,21 @@ public class AddressView extends VerticalLayout {
     binder.bindInstanceFields(this);
 
     grid.setColumns("streetAddress", "city", "postalCode");
-    var customerAddressForm = customerAddressForm();
+
+    var customerAddressForm = createCustomerAddressForm();
 
     add(customerAddressForm, grid);
   }
 
-  private VerticalLayout customerAddressForm() {
+  private VerticalLayout createCustomerAddressForm() {
 
     H2 viewTitle = new H2(ADDRESS_VIEW_TITLE);
 
     var form = new FormLayout();
+    cityField.setLabel("City");
     streetAddress.setLabel("Street Address");
     postalCode.setLabel("Postal Code");
-    cityField.setLabel("City");
+
     form.add(streetAddress, postalCode, cityField);
 
     var saveButton = new Button("Save");
@@ -62,16 +66,26 @@ public class AddressView extends VerticalLayout {
     saveButton
          .addClickListener(clickEvent -> {
 
-           if (binder.writeBeanIfValid(address)) {
+           try {
+             binder.writeBean(address);
+           }
+           catch (ValidationException e) {
+             throw new RuntimeException(e);
+           }
+
+           if (isAddressFilled(address)) {
 
              listAdress.add(address);
              grid.setItems(listAdress);
 
-             var sucessSaving = "Saved Data: %s %n %s %n %s."
-                  .formatted(address.getStreetAddress(), address.getCity(),
-                             address.getPostalCode()
-                  );
+             var sucessSaving =
+                  "Saved Data: %s %n %s %n %s."
+                       .formatted(address.getStreetAddress(), address.getCity(),
+                                  address.getPostalCode()
+                       );
+
              Notification.show(sucessSaving);
+
            } else Notification.show("Please complete the form.");
          });
 
@@ -79,5 +93,14 @@ public class AddressView extends VerticalLayout {
     column.add(viewTitle, form, saveButton);
 
     return column;
+  }
+
+  private boolean isAddressFilled(Address adress) {
+
+    return
+         !adress.getStreetAddress().isBlank() &&
+         !adress.getCity().isBlank() &&
+         !adress.getPostalCode().isBlank();
+
   }
 }

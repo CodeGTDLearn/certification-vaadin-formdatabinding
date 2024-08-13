@@ -28,7 +28,6 @@ public class TaskView extends VerticalLayout {
 
   public TaskView() {
 
-
     H2 title = new H2(TASK_VIEW_TITLE);
 
     var taskField = new TextField("Task");
@@ -95,12 +94,9 @@ public class TaskView extends VerticalLayout {
 
   private void createTaskGrid() {
 
-    // Step 2: Set up the grid
     grid.setColumns("task", "dueDate", "completed");
-    grid.getColumnByKey("completed")
-        .setHeader("Status");
+    grid.getColumnByKey("completed").setHeader("Status");
 
-    // Step 5: Add checkbox to grid
     grid
          .addComponentColumn(columnItem -> {
 

@@ -32,6 +32,7 @@ public class OrderView extends VerticalLayout {
   private IntegerField quantityField;
   private DatePicker deliveryDateField;
   Select<String> categorySelectorField;
+  private Notification show;
 
   public OrderView() {
 
