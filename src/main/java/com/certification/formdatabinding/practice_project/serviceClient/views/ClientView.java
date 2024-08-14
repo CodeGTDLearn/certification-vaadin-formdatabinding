@@ -1,9 +1,11 @@
-package com.certification.formdatabinding.practice_project.customer;
+package com.certification.formdatabinding.practice_project.serviceClient.views;
 
 import com.certification.formdatabinding.practice_project.MainView;
-import com.certification.formdatabinding.practice_project.address.Address;
+import com.certification.formdatabinding.practice_project.serviceClient.entity.Client;
+import com.certification.formdatabinding.practice_project.serviceClient.entity.ClientAddress;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -11,16 +13,18 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 
-import static com.certification.formdatabinding.practice_project.config.AppRoutes.CUSTOMER_VIEW_ROUTE;
-import static com.certification.formdatabinding.practice_project.config.AppViewTitles.CUSTOMER_VIEW_TITLE;
+import static com.certification.formdatabinding.practice_project.components.CustomComponents.divider;
+import static com.certification.formdatabinding.practice_project.config.AppRoutes.CLIENTS_ROUTE;
+import static com.certification.formdatabinding.practice_project.serviceClient.config.ServiceClientTitles.CLIENTS_VIEW_TITLE;
+import static com.certification.formdatabinding.practice_project.serviceClient.config.ServiceClientTitles.CLIENT_FORM_TITLE;
 
-@Route(value = CUSTOMER_VIEW_ROUTE, layout = MainView.class)
-public class CustomerView extends VerticalLayout {
+@Route(value = CLIENTS_ROUTE, layout = MainView.class)
+public class ClientView extends VerticalLayout {
 
-  private final Customer customer = new Customer();
-  private final Address address = new Address();
+  private final Client client = new Client();
+  private final ClientAddress clientAddress = new ClientAddress();
 
-  private Binder<Customer> binder = new Binder<>(Customer.class);
+  private Binder<Client> binder = new Binder<>(Client.class);
 
   private TextField firstNameField;
   private TextField lastNameField;
@@ -30,18 +34,25 @@ public class CustomerView extends VerticalLayout {
   private TextField postalCodeField;
   private TextField cityField;
 
-  public CustomerView() {
+  public ClientView() {
 
-    customer.setAddress(address);
+    H1 viewTitle = new H1(CLIENTS_VIEW_TITLE);
+    H2 formTitle = new H2(CLIENT_FORM_TITLE);
 
+    client.setClientAddress(clientAddress);
 
-    H2 viewTitle = new H2(CUSTOMER_VIEW_TITLE);
     var customerForm = createCustomerForm();
 
     addressBinder();
+
     customerBinder();
 
-    add(viewTitle, customerForm);
+    add(
+         viewTitle,
+         divider(),
+         formTitle,
+         customerForm
+    );
   }
 
   private VerticalLayout createCustomerForm() {
@@ -56,22 +67,21 @@ public class CustomerView extends VerticalLayout {
     postalCodeField = new TextField("Postal Code");
     cityField = new TextField("City");
 
-
     Button saveButton = new Button("Save");
 
     saveButton
          .addClickListener(event -> {
-           if (binder.writeBeanIfValid(customer)) {
+           if (binder.writeBeanIfValid(client)) {
              Notification.show(
                   "Data Saved: %s %n %s %n %s %n %s %n %s"
                        .formatted(
-                            customer.getFirstName(),
-                            customer.getLastName(),
-                            customer.getEmail(),
-                            customer.getAddress()
-                                    .getStreetAddress(),
-                            customer.getAddress()
-                                    .getCity()
+                            client.getFirstName(),
+                            client.getLastName(),
+                            client.getEmail(),
+                            client.getClientAddress()
+                                  .getStreetAddress(),
+                            client.getClientAddress()
+                                  .getCity()
                        )
              );
            } else Notification.show("Please complete the form.");
@@ -100,13 +110,17 @@ public class CustomerView extends VerticalLayout {
     binder
          .forField(firstNameField)
          .asRequired("First name is required")
-         .bind(Customer::getFirstName, Customer::setFirstName);
+         .bind(Client::getFirstName, Client::setFirstName);
 
     binder
          .forField(lastNameField)
          .asRequired("Last name is required")
-         .withValidator(lastName -> lastName.length() >= 3, "min. 3 characters")
-         .bind(Customer::getLastName, Customer::setLastName);
+         .withValidator(
+              lastName ->
+                   (lastName.length() >= 3 && lastName.length() <= 10),
+              "min. 3 characters"
+         )
+         .bind(Client::getLastName, Client::setLastName);
 
     binder
          .forField(emailField)
@@ -114,53 +128,59 @@ public class CustomerView extends VerticalLayout {
          .withValidationStatusHandler(status -> {
            Notification.show("Email is required", 3000, Notification.Position.MIDDLE);
          })
-         .bind(Customer::getEmail, Customer::setEmail);
+         .bind(Client::getEmail, Client::setEmail);
   }
 
   private void addressBinder() {
 
-    // Style 06:
+    // BINDER - Style 06:
     // Bind dos campos de texto aos atributos da classe Address
     binder
          .forField(streetAddressField)
          .asRequired("Street address is required")
-         .bind("address.streetAddress");
+         .bind("clientAddress.streetAddress");
 
-    // Style 07: NOT NULL-SAFETY
+    // BINDER - Style 07: NOT NULL-SAFETY
     binder.forField(postalCodeField)
           .asRequired("Postal code is required")
           .bind(
 
                // GETTER => Customer::getAddress -> getPostalCode
-               customer1 -> customer1.getAddress().getPostalCode(),
+               client1 -> client1.getClientAddress()
+                                 .getPostalCode(),
 
                // SETTER => Customer::getAddress -> setPostalCode
-               (customerToBind, fieldContent) ->
-                    customerToBind.getAddress().setPostalCode(fieldContent)
+               (clientToBind, fieldContent) ->
+                    clientToBind.getClientAddress()
+                                .setPostalCode(fieldContent)
           );
 
-    // Style 07.1: Applying NULL-SAFETY
+    // BINDER - Style 07.1: Applying NULL-SAFETY
     // Lambda Custom Validator - Checking Null
     binder
          .forField(cityField)
          .bind(
 
               // GETTER => Customer::getAddress -> getCity
-              customer -> {
-                return customer.getAddress() == null
+              client -> {
+                return client.getClientAddress() == null
                      ? null
-                     : customer.getAddress().getCity();
+                     : client.getClientAddress()
+                             .getCity();
               },
 
               // Lambda Custom Validator: IF cityField is not BLANK
               // SETTER => Customer::getAddress -> setCity
-              (customer, fieldContent) -> {
-                if (customer.getAddress() != null)
-                  customer.getAddress().setCity(fieldContent);
+              (client, fieldContent) -> {
+                if (client.getClientAddress() != null)
+                  client.getClientAddress()
+                        .setCity(fieldContent);
 
                 if (fieldContent.isBlank())
-                  customer.getAddress().setCity("Check the 'Postal-Code City'");
-                else customer.getAddress().setCity(fieldContent);
+                  client.getClientAddress()
+                        .setCity("Check the 'Postal-Code City'");
+                else client.getClientAddress()
+                           .setCity(fieldContent);
               }
          );
   }

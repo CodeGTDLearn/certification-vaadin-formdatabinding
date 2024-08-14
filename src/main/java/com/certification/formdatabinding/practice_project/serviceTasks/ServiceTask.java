@@ -1,11 +1,11 @@
-package com.certification.formdatabinding.practice_project.tasklist;
+package com.certification.formdatabinding.practice_project.serviceTasks;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class TaskItem {
+public class ServiceTask {
   private String task;
   private String dueDate;
   private boolean completed;

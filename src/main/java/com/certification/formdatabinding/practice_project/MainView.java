@@ -1,9 +1,9 @@
 package com.certification.formdatabinding.practice_project;
 
-import com.certification.formdatabinding.practice_project.address.AddressView;
-import com.certification.formdatabinding.practice_project.customer.CustomerView;
-import com.certification.formdatabinding.practice_project.order.OrderView;
-import com.certification.formdatabinding.practice_project.tasklist.TaskView;
+import com.certification.formdatabinding.practice_project.serviceClient.views.ClientAddressView;
+import com.certification.formdatabinding.practice_project.serviceClient.views.ClientView;
+import com.certification.formdatabinding.practice_project.serviceOrder.ServiceOrderView;
+import com.certification.formdatabinding.practice_project.serviceTasks.ServiceTaskView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H2;
@@ -12,26 +12,27 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 
-import static com.certification.formdatabinding.practice_project.config.AppMenubarLabels.*;
-import static com.certification.formdatabinding.practice_project.config.AppRoutes.PROJECT_ROOT_ROUTE;
-import static com.certification.formdatabinding.practice_project.config.AppViewTitles.*;
+import static com.certification.formdatabinding.practice_project.config.AppRoutes.ROOT_ROUTE;
+import static com.certification.formdatabinding.practice_project.config.AppTitles.APP_MAIN_VIEW_TITLE;
+import static com.certification.formdatabinding.practice_project.config.AppTitles.CERTIFICATION_LESSON_TITLE;
+import static com.certification.formdatabinding.practice_project.config.MenuItems.*;
 
 @PageTitle(CERTIFICATION_LESSON_TITLE)
-@Route(value = PROJECT_ROOT_ROUTE)
+@Route(value = ROOT_ROUTE)
 public class MainView extends AppLayout {
 
   public MainView() {
 
     addToNavbar(
          new DrawerToggle(),
-         new H2(MAIN_VIEW_TITLE)
+         new H2(APP_MAIN_VIEW_TITLE)
     );
 
     var menuBar = new VerticalLayout();
-    menuBar.add(new RouterLink(ORDERS_MENUBAR_LABEL, OrderView.class));
-    menuBar.add(new RouterLink(TASKS_MENUBAR_LABEL, TaskView.class));
-    menuBar.add(new RouterLink(CUSTOMER_MENUBAR_LABEL, CustomerView.class));
-    menuBar.add(new RouterLink(ADDRESS_MENUBAR_LABEL, AddressView.class));
+    menuBar.add(new RouterLink(ORDERS_MENU_ITEM, ServiceOrderView.class));
+    menuBar.add(new RouterLink(TASKS_MENU_ITEM, ServiceTaskView.class));
+    menuBar.add(new RouterLink(CLIENTS_MENU_ITEM, ClientView.class));
+    menuBar.add(new RouterLink(CLIENTS_ADDRESS_MENU_ITEM, ClientAddressView.class));
 
     addToDrawer(menuBar);
   }
