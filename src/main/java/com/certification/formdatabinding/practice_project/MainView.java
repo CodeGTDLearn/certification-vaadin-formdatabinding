@@ -1,9 +1,10 @@
 package com.certification.formdatabinding.practice_project;
 
+import com.certification.formdatabinding.practice_project.elevatorCategory.ElevatorCategoryView;
+import com.certification.formdatabinding.practice_project.repairTasks.RepairTaskView;
 import com.certification.formdatabinding.practice_project.serviceClient.views.ClientAddressView;
 import com.certification.formdatabinding.practice_project.serviceClient.views.ClientView;
 import com.certification.formdatabinding.practice_project.serviceOrder.ServiceOrderView;
-import com.certification.formdatabinding.practice_project.serviceTasks.ServiceTaskView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H2;
@@ -30,9 +31,10 @@ public class MainView extends AppLayout {
 
     var menuBar = new VerticalLayout();
     menuBar.add(new RouterLink(ORDERS_MENU_ITEM, ServiceOrderView.class));
-    menuBar.add(new RouterLink(TASKS_MENU_ITEM, ServiceTaskView.class));
+    menuBar.add(new RouterLink(REPAIR_TASKS_MENU_ITEM, RepairTaskView.class));
     menuBar.add(new RouterLink(CLIENTS_MENU_ITEM, ClientView.class));
     menuBar.add(new RouterLink(CLIENTS_ADDRESS_MENU_ITEM, ClientAddressView.class));
+    menuBar.add(new RouterLink(ELEVATOR_CATEGORY_MENU_ITEM, ElevatorCategoryView.class));
 
     addToDrawer(menuBar);
   }

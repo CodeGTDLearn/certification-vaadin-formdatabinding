@@ -102,7 +102,7 @@ public class ServiceOrderView extends VerticalLayout {
   private void bind_WithValidators_formFields() {
 
     binder
-         // BINDER - Style 01:
+         // BINDER - Style 01: Bind para "propertName"(attributo)
          // Permitido pelo 'new Binder<>(Order.class)'
          // Permitido na AUSENCIA de "Validators"
          // Usado qdo o attributo tem BeanValidation
@@ -112,16 +112,14 @@ public class ServiceOrderView extends VerticalLayout {
          .forField(customerEmailField)
          .withValidator(new EmailValidator("Invalid email address"))
 
-         // BINDER - Style 02:
-         // Permitido pelo 'new Binder<>(Order.class)'
+         // BINDER - Style 02: Permitido pelo 'new Binder<>(Order.class)'
          .bind("customerEmail");
 
     binder
          .forField(elevatorQtdeField)
          .withValidator(quantity -> quantity > 0, "must be bigger than zero")
 
-         // BINDER - Style 03:
-         // Permitido pelo 'new Binder<>(Order.class)' or 'new Binder<>()'
+         // BINDER - Style 03: Permitido pelo 'new Binder<>(Order.class)' or 'new Binder<>()'
          .bind(ServiceOrder::getElevatorsQuantity, ServiceOrder::setElevatorsQuantity);
 
     binder.bind(

@@ -20,15 +20,12 @@ import java.util.List;
 
 import static com.certification.formdatabinding.practice_project.components.CustomComponents.divider;
 import static com.certification.formdatabinding.practice_project.config.AppRoutes.CLIENTS_ADDRESS_ROUTE;
-import static com.certification.formdatabinding.practice_project.serviceClient.config.ServiceClientTitles.CLIENTS_ADDRESS_VIEW_TITLE;
-import static com.certification.formdatabinding.practice_project.serviceClient.config.ServiceClientTitles.CLIENT_ADDRESS_FORM_TITLE;
-import static com.certification.formdatabinding.practice_project.serviceTasks.config.ServiceTasksTitles.GRID_TITLE;
+import static com.certification.formdatabinding.practice_project.serviceClient.config.ServiceClientTitles.*;
 
 @Route(value = CLIENTS_ADDRESS_ROUTE, layout = MainView.class)
 public class ClientAddressView extends VerticalLayout {
 
-  // BINDER - Style 09
-  // - Automatic Binding according Entity-Attribute name
+  // BINDER - Style 09: Automatic Binding according Entity-Attribute name
   private TextField streetAddress = new TextField();
 
   @PropertyId("city")
@@ -38,8 +35,7 @@ public class ClientAddressView extends VerticalLayout {
   private TextField postalCode = new TextField();
 
   private Binder<ClientAddress> binder = new Binder<>(ClientAddress.class);
-
-  private final Grid<ClientAddress> grid = new Grid<>(ClientAddress.class);
+  private  Grid<ClientAddress> grid = new Grid<>(ClientAddress.class);
 
   private ClientAddress clientAddress = new ClientAddress();
   private List<ClientAddress> listAdress = new ArrayList<>();
@@ -51,7 +47,7 @@ public class ClientAddressView extends VerticalLayout {
 
     binder.bindInstanceFields(this);
 
-    H2 gridTitle = new H2(GRID_TITLE);
+    H2 gridTitle = new H2(CLIENT_ADDRESS_GRID_TITLE);
     grid.setColumns("streetAddress", "city", "postalCode");
 
     add(

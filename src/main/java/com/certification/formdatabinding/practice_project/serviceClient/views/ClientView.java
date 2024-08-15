@@ -78,8 +78,7 @@ public class ClientView extends VerticalLayout {
                             client.getFirstName(),
                             client.getLastName(),
                             client.getEmail(),
-                            client.getClientAddress()
-                                  .getStreetAddress(),
+                            client.getClientAddress().getStreetAddress(),
                             client.getClientAddress()
                                   .getCity()
                        )
@@ -133,8 +132,7 @@ public class ClientView extends VerticalLayout {
 
   private void addressBinder() {
 
-    // BINDER - Style 06:
-    // Bind dos campos de texto aos atributos da classe Address
+    // BINDER - Style 06: Bind dos campos de texto aos atributos da classe Address
     binder
          .forField(streetAddressField)
          .asRequired("Street address is required")

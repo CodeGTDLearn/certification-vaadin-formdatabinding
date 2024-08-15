@@ -1,4 +1,4 @@
-package com.certification.formdatabinding.practice_project.serviceTasks;
+package com.certification.formdatabinding.practice_project.repairTasks;
 
 import com.certification.formdatabinding.practice_project.MainView;
 import com.vaadin.flow.component.button.Button;
@@ -18,17 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.certification.formdatabinding.practice_project.components.CustomComponents.divider;
-import static com.certification.formdatabinding.practice_project.config.AppRoutes.TASKS_ROUTE;
-import static com.certification.formdatabinding.practice_project.serviceTasks.config.ServiceTasksTitles.*;
+import static com.certification.formdatabinding.practice_project.config.AppRoutes.REPAIR_TASKS;
+import static com.certification.formdatabinding.practice_project.repairTasks.config.RepairTasksTitles.*;
 
-@Route(value = TASKS_ROUTE, layout = MainView.class)
-public class ServiceTaskView extends VerticalLayout {
+@Route(value = REPAIR_TASKS, layout = MainView.class)
+public class RepairTaskView extends VerticalLayout {
 
-  private final Grid<ServiceTask> grid = new Grid<>(ServiceTask.class);
-  private final List<ServiceTask> grid_items = new ArrayList<>();
-  private final Binder<ServiceTask> binderTask = new Binder<>(ServiceTask.class);
+  private final Grid<RepairTask> gridItemsView = new Grid<>(RepairTask.class);
+  private final List<RepairTask> gridItemsList = new ArrayList<>();
+  private final Binder<RepairTask> binderTask = new Binder<>(RepairTask.class);
 
-  public ServiceTaskView() {
+  public RepairTaskView() {
 
     H1 viewTitle = new H1(TASKS_VIEW_TITLE);
     H2 formTitle = new H2(TASK_FORM_TITLE);
@@ -40,7 +40,7 @@ public class ServiceTaskView extends VerticalLayout {
     row.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
     bind_WithValidators_rowFields(taskField, dueDateTaskField);
 
-    H2 gridTitle = new H2(GRID_TITLE);
+    H2 gridTitle = new H2(TASK_GRID_TITLE);
     createTaskGrid();
 
     add(
@@ -50,7 +50,7 @@ public class ServiceTaskView extends VerticalLayout {
          row,
          divider(),
          gridTitle,
-         grid
+         gridItemsView
     );
   }
 
@@ -61,14 +61,14 @@ public class ServiceTaskView extends VerticalLayout {
     button
          .addClickListener(event -> {
 
-           ServiceTask newTask = new ServiceTask();
+           RepairTask newTask = new RepairTask();
 
            // binderTask [writeBeanIfValid]:
            // - check Validation of AllFields +
            // - 'write' "Field-Content" para "Entity-Attribute"
            if (binderTask.writeBeanIfValid(newTask)) {
-             grid_items.add(newTask);
-             grid.setItems(grid_items);
+             gridItemsList.add(newTask);
+             gridItemsView.setItems(gridItemsList);
            }
          });
 
@@ -77,10 +77,10 @@ public class ServiceTaskView extends VerticalLayout {
 
   private void bind_WithValidators_rowFields(TextField field, DatePicker datePicker) {
 
-    // BINDER - Style 04:
+    // BINDER - Style 04: Reference Method
     // Permitido pelo 'new Binder<>(Order.class)'
     // Permitido na AUSENCIA de "Validators"
-    binderTask.bind(field, ServiceTask::getTask, ServiceTask::setTask);
+    binderTask.bind(field, RepairTask::getTask, RepairTask::setTask);
 
     // binderTask [forField/bind]: "Link" between "field" -> Entity_Attribute
     binderTask
@@ -94,21 +94,20 @@ public class ServiceTaskView extends VerticalLayout {
               "Due date must be today or in the future"
          )
 
-         // BINDER - Style 05:
-         // Permitido pelo 'new Binder<>(Order.class)'
+         // BINDER - Style 05: Permitido pelo 'new Binder<>(Order.class)'
          .bind(
-              serviceTask -> datePicker.getValue(), // representa o get
+              repairTask -> datePicker.getValue(), // representa o get
               (dateEntity, newDatePicker) -> dateEntity.setDueDate(newDatePicker.toString())
          );
   }
 
   private void createTaskGrid() {
 
-    grid.setColumns("task", "dueDate", "completed");
-    grid.getColumnByKey("completed")
-        .setHeader("Status");
+    gridItemsView.setColumns("task", "dueDate", "completed");
+    gridItemsView.getColumnByKey("completed")
+                 .setHeader("Status");
 
-    grid
+    gridItemsView
          .addComponentColumn(columnItem -> {
 
            var taskCompleted_checkbox = new Checkbox(columnItem.isCompleted());
@@ -120,7 +119,7 @@ public class ServiceTaskView extends VerticalLayout {
                        columnItem
                             .setCompleted(checkboxState.getValue());
 
-                       grid
+                       gridItemsView
                             .getDataProvider()
                             .refreshItem(columnItem);
                      });

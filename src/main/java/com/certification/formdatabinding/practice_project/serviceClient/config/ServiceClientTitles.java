@@ -7,4 +7,5 @@ public class ServiceClientTitles {
 
   public static final String CLIENTS_ADDRESS_VIEW_TITLE = "Client's Address";
   public static final String CLIENT_ADDRESS_FORM_TITLE = "Address Detail";
+  public static final String CLIENT_ADDRESS_GRID_TITLE = "Addresses:";
 }
