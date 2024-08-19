@@ -17,21 +17,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.divider;
+import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.REPAIR_TASKS;
-import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.RepairTasksLabels.*;
-import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.RepairTasksTitles.*;
-import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.RepairTasksValidationMessages.REPAIR_TASK_DUEDATE_REQUIRED_MESSAGE;
-import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.RepairTasksValidationMessages.REPAIR_TASK_DUEDATE_VALIDATION_MESSAGE;
+import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.ElevatorRepairTasksLabels.*;
+import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.ElevatorRepairTasksTitles.*;
+import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.ElevatorRepairTasksValidationMessages.REPAIR_TASK_DUEDATE_REQUIRED_MESSAGE;
+import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.ElevatorRepairTasksValidationMessages.REPAIR_TASK_DUEDATE_VALIDATION_MESSAGE;
 
 @Route(value = REPAIR_TASKS, layout = MainView.class)
-public class RepairTaskView extends VerticalLayout {
+public class ElevatorRepairTaskView extends VerticalLayout {
 
-  private final Grid<RepairTask> gridItemsView = new Grid<>(RepairTask.class);
-  private final List<RepairTask> gridItemsList = new ArrayList<>();
-  private final Binder<RepairTask> binderTask = new Binder<>(RepairTask.class);
+  private final Grid<ElevatorRepairTask> gridItemsView = new Grid<>(ElevatorRepairTask.class);
+  private final List<ElevatorRepairTask> gridItemsList = new ArrayList<>();
+  private final Binder<ElevatorRepairTask> binderTask = new Binder<>(ElevatorRepairTask.class);
 
-  public RepairTaskView() {
+  public ElevatorRepairTaskView() {
 
     H1 viewTitle = new H1(REPAIR_TASK_VIEW_TITLE);
     H2 formTitle = new H2(REPAIR_TASK_VIEW_FORM_TITLE);
@@ -48,10 +48,10 @@ public class RepairTaskView extends VerticalLayout {
 
     add(
          viewTitle,
-         divider(),
+         createDivider(),
          formTitle,
          row,
-         divider(),
+         createDivider(),
          gridTitle,
          gridItemsView
     );
@@ -64,7 +64,7 @@ public class RepairTaskView extends VerticalLayout {
     button
          .addClickListener(event -> {
 
-           RepairTask newTask = new RepairTask();
+           ElevatorRepairTask newTask = new ElevatorRepairTask();
 
            // binderTask [writeBeanIfValid]:
            // - check Validation of AllFields +
@@ -83,7 +83,7 @@ public class RepairTaskView extends VerticalLayout {
     // BINDER - Style 04: Reference Method
     // Permitido pelo 'new Binder<>(Order.class)'
     // Permitido na AUSENCIA de "Validators"
-    binderTask.bind(field, RepairTask::getTask, RepairTask::setTask);
+    binderTask.bind(field, ElevatorRepairTask::getTask, ElevatorRepairTask::setTask);
 
     // binderTask [forField/bind]: "Link" between "field" -> Entity_Attribute
     binderTask
@@ -99,7 +99,7 @@ public class RepairTaskView extends VerticalLayout {
 
          // BINDER - Style 05: Permitido pelo 'new Binder<>(Order.class)'
          .bind(
-              repairTask -> datePicker.getValue(), // representa o get
+              elevatorRepairTask -> datePicker.getValue(), // representa o get
               (dateEntity, newDatePicker) -> dateEntity.setDueDate(newDatePicker.toString())
          );
   }

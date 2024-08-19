@@ -1,6 +1,6 @@
 package com.certification.formdatabinding.practice_project.elevatorRepairTasks.config;
 
-public class RepairTasksLabels {
+public class ElevatorRepairTasksLabels {
 
   public static final String REPAIR_TASK_LABEL = "Task";
   public static final String REPAIR_TASK_DUEDATE_LABEL = "DueDate";

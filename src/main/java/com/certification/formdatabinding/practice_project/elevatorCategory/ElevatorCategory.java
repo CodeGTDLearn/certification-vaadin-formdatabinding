@@ -1,13 +1,14 @@
 package com.certification.formdatabinding.practice_project.elevatorCategory;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 //@Builder
-//@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Category {
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class ElevatorCategory {
 
  private String categoryName;
  private String manufacturer;

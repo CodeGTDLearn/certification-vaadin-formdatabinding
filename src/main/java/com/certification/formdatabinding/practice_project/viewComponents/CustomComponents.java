@@ -3,7 +3,7 @@ package com.certification.formdatabinding.practice_project.viewComponents;
 import com.vaadin.flow.component.html.Div;
 
 public class CustomComponents {
-  public static Div divider() {
+  public static Div createDivider() {
 
     Div divider = new Div();
 

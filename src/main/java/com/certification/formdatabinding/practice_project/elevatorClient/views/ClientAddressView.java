@@ -18,7 +18,7 @@ import com.vaadin.flow.router.Route;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.divider;
+import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
 import static com.certification.formdatabinding.practice_project.appConfig.AppMessages.APP_MESSAGE_COMPLETE_THE_FORM;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.CLIENTS_ADDRESS_ROUTE;
 import static com.certification.formdatabinding.practice_project.elevatorClient.config.ClientAddressViewLabels.*;
@@ -54,10 +54,10 @@ public class ClientAddressView extends VerticalLayout {
 
     add(
          viewTitle,
-         divider(),
+         createDivider(),
          formTitle,
          createCustomerAddressForm(),
-         divider(),
+         createDivider(),
          gridTitle,
          grid
     );

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RepairTask {
+public class ElevatorRepairTask {
   private String task;
   private String dueDate;
   private boolean completed;

@@ -13,7 +13,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.divider;
+import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
 import static com.certification.formdatabinding.practice_project.appConfig.AppMessages.APP_MESSAGE_COMPLETE_THE_FORM;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.CLIENTS_ROUTE;
 import static com.certification.formdatabinding.practice_project.elevatorClient.config.ClientViewBinderValidationMessages.*;
@@ -52,7 +52,7 @@ public class ClientView extends VerticalLayout {
 
     add(
          viewTitle,
-         divider(),
+         createDivider(),
          formTitle,
          customerForm
     );

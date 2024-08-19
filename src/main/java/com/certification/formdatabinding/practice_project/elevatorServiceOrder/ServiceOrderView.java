@@ -1,6 +1,7 @@
 package com.certification.formdatabinding.practice_project.elevatorServiceOrder;
 
 import com.certification.formdatabinding.practice_project.MainView;
+import com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCategoryTypes;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -19,14 +20,15 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.divider;
 import static com.certification.formdatabinding.practice_project.appConfig.AppMessages.APP_MESSAGE_CORRECT_THE_FORM;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.ORDERS_ROUTE;
 import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ServiceOrderLabels.*;
 import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ServiceOrderTitles.SERVCE_ORDER_FORM_DETAILS_TITLE;
 import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ServiceOrderTitles.SERVICE_ORDER_VIEW_TITLE;
 import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ServiceOrderValidationMessages.*;
+import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
 
 @Route(value = ORDERS_ROUTE, layout = MainView.class)
 @RouteAlias(value = "", layout = MainView.class)
@@ -46,7 +48,7 @@ public class ServiceOrderView extends VerticalLayout {
 
     add(
          viewTitle,
-         divider(),
+         createDivider(),
          formTitle
     );
 
@@ -64,7 +66,12 @@ public class ServiceOrderView extends VerticalLayout {
 
     elevatorCategoryField = new Select<>();
     elevatorCategoryField.setLabel(ELEVATOR_CATEGORY_LABEL);
-    elevatorCategoryField.setItems("Lux", "Service", "Panoramic");
+    elevatorCategoryField.setItems(
+         Arrays
+              .stream(ElevatorCategoryTypes.values())
+              .map(ElevatorCategoryTypes::getName)
+              .toList()
+    );
 
     var formLayout = new FormLayout();
 
@@ -128,7 +135,8 @@ public class ServiceOrderView extends VerticalLayout {
     binder.bind(
          elevatorCategoryField,
          serviceOrder -> serviceOrder.getElevatorCategory(),
-         (serviceOrder, categoryFieldContent) -> serviceOrder.setElevatorCategory(categoryFieldContent)
+         (serviceOrder, categoryFieldContent) -> serviceOrder.setElevatorCategory(
+              categoryFieldContent)
     );
 
     binder
