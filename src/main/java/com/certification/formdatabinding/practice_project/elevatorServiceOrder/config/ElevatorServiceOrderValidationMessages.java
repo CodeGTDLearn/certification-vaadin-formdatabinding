@@ -1,6 +1,6 @@
 package com.certification.formdatabinding.practice_project.elevatorServiceOrder.config;
 
-public class ServiceOrderValidationMessages {
+public class ElevatorServiceOrderValidationMessages {
 
   public static final String EMAIL_VALIDATION_MESSSAGE = "Invalid email address";
   public static final String DEADLINE_REQUIRED_MESSSAGE = "DeadLine required";

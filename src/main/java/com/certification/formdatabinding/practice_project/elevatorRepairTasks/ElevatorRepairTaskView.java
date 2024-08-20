@@ -38,13 +38,13 @@ public class ElevatorRepairTaskView extends VerticalLayout {
 
     var taskField = new TextField(REPAIR_TASK_LABEL);
     var dueDateTaskField = new DatePicker(REPAIR_TASK_DUEDATE_LABEL);
-    var addTaskButton = createAddTaskButton();
+    var addTaskButton = createAddButton();
     var row = new HorizontalLayout(taskField, dueDateTaskField, addTaskButton);
     row.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
-    bind_WithValidators_rowFields(taskField, dueDateTaskField);
+    settingBinder(taskField, dueDateTaskField);
 
     H2 gridTitle = new H2(REPAIR_TASK_VIEW_GRID_TITLE);
-    createTaskGrid();
+    createGrid();
 
     add(
          viewTitle,
@@ -57,7 +57,7 @@ public class ElevatorRepairTaskView extends VerticalLayout {
     );
   }
 
-  private Button createAddTaskButton() {
+  private Button createAddButton() {
 
     Button button = new Button(REPAIR_ADD_TASK_BUTTON_LABEL);
 
@@ -78,7 +78,7 @@ public class ElevatorRepairTaskView extends VerticalLayout {
     return button;
   }
 
-  private void bind_WithValidators_rowFields(TextField field, DatePicker datePicker) {
+  private void settingBinder(TextField field, DatePicker datePicker) {
 
     // BINDER - Style 04: Reference Method
     // Permitido pelo 'new Binder<>(Order.class)'
@@ -86,6 +86,8 @@ public class ElevatorRepairTaskView extends VerticalLayout {
     binderTask.bind(field, ElevatorRepairTask::getTask, ElevatorRepairTask::setTask);
 
     // binderTask [forField/bind]: "Link" between "field" -> Entity_Attribute
+    // todo:  VALIDATOR - Style 4.0: Multiplos Validators
+    // - Multiplos Validators
     binderTask
          .forField(datePicker)
          .withValidator(
@@ -97,14 +99,14 @@ public class ElevatorRepairTaskView extends VerticalLayout {
               REPAIR_TASK_DUEDATE_VALIDATION_MESSAGE
          )
 
-         // BINDER - Style 05: Permitido pelo 'new Binder<>(Order.class)'
+         // todo:  BINDER - Style 05: Permitido pelo 'new Binder<>(Order.class)'
          .bind(
               elevatorRepairTask -> datePicker.getValue(), // representa o get
               (dateEntity, newDatePicker) -> dateEntity.setDueDate(newDatePicker.toString())
          );
   }
 
-  private void createTaskGrid() {
+  private void createGrid() {
 
     gridItemsView.setColumns("task", "dueDate", "completed");
     gridItemsView.getColumnByKey("completed")

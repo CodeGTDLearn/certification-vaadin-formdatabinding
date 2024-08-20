@@ -30,7 +30,7 @@ Once the JAR file is built, you can run it using
   side/top bar and the main menu). This setup uses
   [App Layout](https://vaadin.com/docs/components/app-layout).
 - `views` package in `src/main/java` contains the server-side Java views of your application.
-- `views` folder in `src/main/frontend` contains the client-side JavaScript views of your application.
+- `views` folder in `src/main/frontend` contains the elevatorClient-side JavaScript views of your application.
 - `themes` folder in `src/main/frontend` contains the custom CSS styles.
 
 ## Useful links

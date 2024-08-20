@@ -24,24 +24,24 @@ import java.util.Arrays;
 
 import static com.certification.formdatabinding.practice_project.appConfig.AppMessages.APP_MESSAGE_CORRECT_THE_FORM;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.ORDERS_ROUTE;
-import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ServiceOrderLabels.*;
-import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ServiceOrderTitles.SERVCE_ORDER_FORM_DETAILS_TITLE;
-import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ServiceOrderTitles.SERVICE_ORDER_VIEW_TITLE;
-import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ServiceOrderValidationMessages.*;
+import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ElevatorServiceOrderLabels.*;
+import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ElevatorServiceOrderTitles.SERVCE_ORDER_FORM_DETAILS_TITLE;
+import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ElevatorServiceOrderTitles.SERVICE_ORDER_VIEW_TITLE;
+import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ElevatorServiceOrderValidationMessages.*;
 import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
 
 @Route(value = ORDERS_ROUTE, layout = MainView.class)
 @RouteAlias(value = "", layout = MainView.class)
-public class ServiceOrderView extends VerticalLayout {
+public class ElevatorServiceOrderView extends VerticalLayout {
 
-  private final Binder<ServiceOrder> binder = new Binder<>(ServiceOrder.class);
+  private final Binder<ElevatorServiceOrder> binder = new Binder<>(ElevatorServiceOrder.class);
   private TextField customerNameField;
   private EmailField customerEmailField;
   private IntegerField elevatorQtdeField;
   private DatePicker deadLineField;
   private Select<String> elevatorCategoryField;
 
-  public ServiceOrderView() {
+  public ElevatorServiceOrderView() {
 
     H1 viewTitle = new H1(SERVICE_ORDER_VIEW_TITLE);
     H2 formTitle = new H2(SERVCE_ORDER_FORM_DETAILS_TITLE);
@@ -52,11 +52,11 @@ public class ServiceOrderView extends VerticalLayout {
          formTitle
     );
 
-    createOrderForm();
-    bind_WithValidators_formFields();
+    createForm();
+    settingBinder();
   }
 
-  private void createOrderForm() {
+  private void createForm() {
 
     customerNameField = new TextField(CUSTOMER_NAME_LABEL);
     customerEmailField = new EmailField(CUSTOMER_EMAIL_LABEL);
@@ -91,10 +91,11 @@ public class ServiceOrderView extends VerticalLayout {
 
     Button submitOrder = new Button(ADD_SERVICE_ORDER_LABEL, event -> {
       try {
-        ServiceOrder myServiceOrder = new ServiceOrder();
 
-        // writeBean: write 'fields-values' in an Object(myOrder)
-        binder.writeBean(myServiceOrder);
+        var myElevatorServiceOrder = new ElevatorServiceOrder();
+
+        // todo:  writeBean: write 'fields-values' in an Object(myOrder)
+        binder.writeBean(myElevatorServiceOrder);
         processOrder();
       }
       catch (ValidationException e) {
@@ -109,36 +110,45 @@ public class ServiceOrderView extends VerticalLayout {
     add(formLayout, submitOrder);
   }
 
-  private void bind_WithValidators_formFields() {
+  private void settingBinder() {
 
     binder
-         // BINDER - Style 01: Bind para "propertName"(attributo)
+         // todo:  BINDER - Style 01: Bind para "propertName"(attributo)
          // Permitido pelo 'new Binder<>(Order.class)'
          // Permitido na AUSENCIA de "Validators"
          // Usado qdo o attributo tem BeanValidation
          .bind(customerNameField, "customerName");
 
+    // todo:  VALIDATOR - Style 3.0: Vaadin Standard Validator
+    // - Validator Standard do Vaadin
     binder
          .forField(customerEmailField)
          .withValidator(new EmailValidator(EMAIL_VALIDATION_MESSSAGE))
 
-         // BINDER - Style 02: Permitido pelo 'new Binder<>(Order.class)'
+         // todo:  BINDER - Style 02: Permitido pelo 'new Binder<>(Order.class)'
          .bind("customerEmail");
 
+
+    // todo:  VALIDATOR - Style 1.0: Lambda Validator for Numbers
+    // - Validator customizado com Lambda p/ numbers
     binder
          .forField(elevatorQtdeField)
          .withValidator(quantity -> quantity > 0, QTDE_BIGGER_THAN_ZERO_VALIDATION_MESSSAGE)
 
-         // BINDER - Style 03: Permitido pelo 'new Binder<>(Order.class)' or 'new Binder<>()'
-         .bind(ServiceOrder::getElevatorsQuantity, ServiceOrder::setElevatorsQuantity);
+         // todo:  BINDER - Style 03: Permitido pelo 'new Binder<>(Order.class)' or 'new Binder<>()'
+         .bind(ElevatorServiceOrder::getElevatorsQuantity,
+               ElevatorServiceOrder::setElevatorsQuantity
+         );
 
     binder.bind(
          elevatorCategoryField,
-         serviceOrder -> serviceOrder.getElevatorCategory(),
-         (serviceOrder, categoryFieldContent) -> serviceOrder.setElevatorCategory(
-              categoryFieldContent)
+         elevatorServiceOrder -> elevatorServiceOrder.getElevatorCategory(),
+         (elevatorServiceOrder, categoryFieldContent) ->
+              elevatorServiceOrder.setElevatorCategory(categoryFieldContent)
     );
 
+    // todo:  VALIDATOR - Style 2.0: Lambda Validator for Date
+    // - Validator customizado com Lambda p/ data
     binder
          .forField(deadLineField)
          .asRequired(DEADLINE_REQUIRED_MESSSAGE)

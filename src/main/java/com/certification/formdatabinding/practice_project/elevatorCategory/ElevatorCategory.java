@@ -12,7 +12,7 @@ public class ElevatorCategory {
 
  private String categoryName;
  private String manufacturer;
- private String maxCapacity;
- private String speed;
- private String maxWeight;
+ private Integer maxCapacity;
+ private Double speed;
+ private Integer maxWeight;
 }

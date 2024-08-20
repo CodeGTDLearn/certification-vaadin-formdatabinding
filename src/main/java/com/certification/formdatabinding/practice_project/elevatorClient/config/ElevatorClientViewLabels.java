@@ -1,6 +1,6 @@
 package com.certification.formdatabinding.practice_project.elevatorClient.config;
 
-public class ClientViewLabels {
+public class ElevatorClientViewLabels {
 
   public static final String SERVICE_CLIENT_FIRSTNAME_FIELD_LABEL = "First Name";
   public static final String SERVICE_CLIENT_LASTNAME_FIELD_LABEL = "Last Name";

@@ -1,6 +1,6 @@
 package com.certification.formdatabinding.practice_project.elevatorServiceOrder.config;
 
-public class ServiceOrderLabels {
+public class ElevatorServiceOrderLabels {
 
   public static final String CUSTOMER_NAME_LABEL = "Customer Name";
   public static final String CUSTOMER_EMAIL_LABEL = "Customer Email";

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ServiceOrder {
+public class ElevatorServiceOrder {
   private String customerName;
   private String customerEmail;
   private int elevatorsQuantity;

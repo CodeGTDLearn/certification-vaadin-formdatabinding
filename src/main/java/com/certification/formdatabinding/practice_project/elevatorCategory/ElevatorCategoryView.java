@@ -1,6 +1,7 @@
 package com.certification.formdatabinding.practice_project.elevatorCategory;
 
 import com.certification.formdatabinding.practice_project.MainView;
+import com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCapacityCustomConverter;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.PropertyId;
+import com.vaadin.flow.data.converter.StringToDoubleConverter;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
@@ -19,8 +21,10 @@ import java.util.List;
 import static com.certification.formdatabinding.practice_project.appConfig.AppMessages.APP_MESSAGE_COMPLETE_FIELD_FORM;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.ELEVATOR_CATEGORY_ROUTE;
 import static com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCategoryLabels.*;
+import static com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCategoryMessages.ELEVATOR_SPEED_FORMAT_NUMBER_MESSAGE;
+import static com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCategoryMessages.ELEVATOR_SPEED_VALIDATION_MESSAGE;
 import static com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCategoryTitles.*;
-import static com.certification.formdatabinding.practice_project.utils.MockedDataSourceElevatorCategory.createRandomMockedElevatorCategory;
+import static com.certification.formdatabinding.practice_project.utils.MockedDataSourceElevatorCategory.randomMockedElevatorCategory;
 import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
 
 
@@ -28,19 +32,19 @@ import static com.certification.formdatabinding.practice_project.viewComponents.
 public class ElevatorCategoryView extends VerticalLayout {
 
   @PropertyId("categoryName")
-  private final TextField categoryType = new TextField();
+  private final TextField categoryField = new TextField();
 
   @PropertyId("manufacturer")
-  private final TextField brand = new TextField();
+  private final TextField brandField = new TextField();
 
   @PropertyId("maxCapacity")
-  private final TextField capacity = new TextField();
+  private final TextField capacityField = new TextField();
 
   @PropertyId("speed")
-  private final TextField speed = new TextField();
+  private final TextField speedField = new TextField();
 
   @PropertyId("maxWeight")
-  private final TextField weight = new TextField();
+  private final TextField weightField = new TextField();
 
   private final Binder<ElevatorCategory> binder = new Binder<>(ElevatorCategory.class);
   private final Grid<ElevatorCategory> gridCategoryView = new Grid<>(ElevatorCategory.class);
@@ -49,7 +53,7 @@ public class ElevatorCategoryView extends VerticalLayout {
 
   public ElevatorCategoryView() {
 
-    createTheViewBinders();
+    settingBinder();
 
     H2 titleView = new H2(ELEVATORS_CATEGORY_VIEW_TITLE);
 
@@ -74,18 +78,34 @@ public class ElevatorCategoryView extends VerticalLayout {
 
   }
 
-  private void createTheViewBinders() {
+  private void settingBinder() {
 
     binder.bindInstanceFields(this);
 
     binder
-         .forField(categoryType)
-         .withValidator(categoryField -> categoryField.length() > 2,
+         .forField(categoryField)
+         .withValidator(field -> field.length() > 2,
                         APP_MESSAGE_COMPLETE_FIELD_FORM
          )
-         .bind(
-              ElevatorCategory::getCategoryName, ElevatorCategory::setCategoryName
-         );
+         .bind(ElevatorCategory::getCategoryName, ElevatorCategory::setCategoryName);
+
+
+    // todo:  CONVERTER - Style 1.0: Converter / Validator Seriados
+    // - Converter + Validator segue a 'sequencia' de validacao/conversao disposta
+    binder
+         .forField(speedField)
+         .withValidator(
+              field ->
+                   Double.parseDouble(field) <= 2.0, ELEVATOR_SPEED_VALIDATION_MESSAGE)
+         .withConverter(new StringToDoubleConverter(ELEVATOR_SPEED_FORMAT_NUMBER_MESSAGE))
+         .bind("speed"); //Bean Attribute
+
+
+    // todo: CONVERTER - Style 2.0: Custom Converter
+    binder
+         .forField(capacityField)
+         .withConverter(new ElevatorCapacityCustomConverter())
+         .bind("maxCapacity"); //Bean Attribute
   }
 
   private VerticalLayout createForm() {
@@ -94,18 +114,18 @@ public class ElevatorCategoryView extends VerticalLayout {
 
     H2 title = new H2(ELEVATOR_CATEGORY_FORM_TITLE);
 
-    categoryType.setPlaceholder(CATEGORY_TYPE_FIELD_PLACEHOLDER);
-    speed.setPlaceholder(SPEED_FIELD_PLACEHOLDER);
-    brand.setPlaceholder(BRAND_FIELD_PLACEHOLDER);
-    capacity.setPlaceholder(CAPACITY_FIELD_PLACEHOLDER);
-    weight.setPlaceholder(MAXWEIGHT_FIELD_PLACEHOLDER);
+    categoryField.setPlaceholder(CATEGORY_TYPE_FIELD_PLACEHOLDER);
+    speedField.setPlaceholder(SPEED_FIELD_PLACEHOLDER);
+    brandField.setPlaceholder(BRAND_FIELD_PLACEHOLDER);
+    capacityField.setPlaceholder(CAPACITY_FIELD_PLACEHOLDER);
+    weightField.setPlaceholder(MAXWEIGHT_FIELD_PLACEHOLDER);
 
     form.add(
-         categoryType,
-         speed,
-         brand,
-         capacity,
-         weight
+         categoryField,
+         speedField,
+         brandField,
+         capacityField,
+         weightField
     );
 
     form
@@ -117,7 +137,7 @@ public class ElevatorCategoryView extends VerticalLayout {
          );
 
     var column = new VerticalLayout();
-    var row = new HorizontalLayout(createAddCategoryButton(), createSuggestCategoryButton());
+    var row = new HorizontalLayout(createAddButton(), loadTemplateButton());
     column
          .add(
               title,
@@ -128,16 +148,16 @@ public class ElevatorCategoryView extends VerticalLayout {
     return column;
   }
 
-  private Button createSuggestCategoryButton() {
+  private Button loadTemplateButton() {
 
     Button button = new Button(SUGGEST_ELEVATORS_BUTTON_LABEL);
 
     button
          .addClickListener(event -> {
 
-           categoryBean = createRandomMockedElevatorCategory();
+           categoryBean = randomMockedElevatorCategory();
 
-           // BEAN - Style 2.0: setBean (Mudancas no Field, refletem no Bean RealTime)
+           // todo: BEAN - Style 2.0: setBean (Mudancas no Field, refletem no Bean RealTime - Unbuffered Changes)
            // - Set the Bean as "DataSource"
            // - Fields are Updated by the Bean
            // - Beans is updated by the Fields
@@ -147,7 +167,7 @@ public class ElevatorCategoryView extends VerticalLayout {
     return button;
   }
 
-  private Button createAddCategoryButton() {
+  private Button createAddButton() {
 
     Button button = new Button(ADD_ELEVATORS_BUTTON_LABEL);
 
@@ -155,23 +175,22 @@ public class ElevatorCategoryView extends VerticalLayout {
          .addClickListener(event -> {
 
            Notification.show("Before Updating - The Bean is: " + categoryBean.toString());
-/*
-              BEAN - Style 01: writeBeanIfValid
-                - Beans is updated by the Fields IF pass "Validating"
-                  - "Validate Failing"(FieldLevel -> BeanLevel):
-                - don't update + return false
 
-             FieldLevel 1) Field Validators: IF Pass, go to the 'STAGE 02'
-             BeanLevel  2) Bean Validators: Check BeanValidation ->
-                           IF fails - Everything is REVERTED to the STATE 'before' STAGE 01
-*/
+//          todo: BEAN - Style 01: writeBeanIfValid
+//             - Beans is updated by the Fields IF 'ALL Fields pass in Validation'
+//             - IF Fail in Validation: don't update + return false
+//
+//          FieldLevel 1) Field Validators: IF Pass, go to the 'STAGE 02'(BeanLevel)
+//          BeanLevel  2) Bean Attributes: IF no errors happens, write in the Bean ->
+//                        IF fails - Everything is REVERTED to the STATE 'before' STAGE 01(FieldLevel)
+
            if (binder.writeBeanIfValid(categoryBean)) {
              categories.add(categoryBean);
              gridCategoryView.setItems(categories);
 
-             Notification.show("After update - The Bean updateding: " + categoryBean.toString());
+             Notification.show("After update - The Bean updating: " + categoryBean.toString());
 
-             // BEAN - Style 2.0: setBean (Mudancas no Field, refletem no Bean RealTime)
+             // todo: BEAN - Style 2.0: setBean (Mudancas no Field, refletem no Bean RealTime - Unbuffered Changes)
              // - Set the Bean as "DataSource"
              // - Fields are Updated by the Bean
              // - Beans is updated by the Fields

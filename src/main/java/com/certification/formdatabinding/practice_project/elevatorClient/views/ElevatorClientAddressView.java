@@ -1,13 +1,14 @@
 package com.certification.formdatabinding.practice_project.elevatorClient.views;
 
 import com.certification.formdatabinding.practice_project.MainView;
-import com.certification.formdatabinding.practice_project.elevatorClient.entity.ClientAddress;
+import com.certification.formdatabinding.practice_project.elevatorClient.entity.ElevatorClientAddress;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -18,14 +19,15 @@ import com.vaadin.flow.router.Route;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.certification.formdatabinding.practice_project.utils.MockedDataSourceElevatorCategory.mockedElevatorClientAddress;
 import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
 import static com.certification.formdatabinding.practice_project.appConfig.AppMessages.APP_MESSAGE_COMPLETE_THE_FORM;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.CLIENTS_ADDRESS_ROUTE;
-import static com.certification.formdatabinding.practice_project.elevatorClient.config.ClientAddressViewLabels.*;
-import static com.certification.formdatabinding.practice_project.elevatorClient.config.ClientAddressViewTitles.*;
+import static com.certification.formdatabinding.practice_project.elevatorClient.config.ElevatorClientAddressLabels.*;
+import static com.certification.formdatabinding.practice_project.elevatorClient.config.ElevatorClientAddressTitles.*;
 
 @Route(value = CLIENTS_ADDRESS_ROUTE, layout = MainView.class)
-public class ClientAddressView extends VerticalLayout {
+public class ElevatorClientAddressView extends VerticalLayout {
 
   // BINDER - Style 09: Automatic Binding according Entity-Attribute name
   private TextField streetAddress = new TextField();
@@ -36,34 +38,39 @@ public class ClientAddressView extends VerticalLayout {
   //  Automatic Binding according Entity-Attribute name
   private TextField postalCode = new TextField();
 
-  private Binder<ClientAddress> binder = new Binder<>(ClientAddress.class);
-  private  Grid<ClientAddress> grid = new Grid<>(ClientAddress.class);
+  private Binder<ElevatorClientAddress> binder = new Binder<>(ElevatorClientAddress.class);
+  private  Grid<ElevatorClientAddress> grid = new Grid<>(ElevatorClientAddress.class);
 
-  private ClientAddress clientAddress = new ClientAddress();
-  private List<ClientAddress> listAdress = new ArrayList<>();
+  private ElevatorClientAddress elevatorClientAddress = new ElevatorClientAddress();
+  private List<ElevatorClientAddress> listAdress = new ArrayList<>();
 
-  public ClientAddressView() {
+  public ElevatorClientAddressView() {
 
     H1 viewTitle = new H1(CLIENT_ADDRESS_VIEW_TITLE);
-    H2 formTitle = new H2(CLIENT_ADDRESS_VIEW_FORM_TITLE);
 
     binder.bindInstanceFields(this);
-
-    H2 gridTitle = new H2(CLIENT_ADDRESS_VIEW_GRID_TITLE);
-    grid.setColumns("streetAddress", "city", "postalCode");
 
     add(
          viewTitle,
          createDivider(),
-         formTitle,
-         createCustomerAddressForm(),
+         createForm(),
          createDivider(),
-         gridTitle,
-         grid
+         createGrid()
     );
   }
 
-  private VerticalLayout createCustomerAddressForm() {
+  private Grid<ElevatorClientAddress> createGrid() {
+
+    add(new H2(CLIENT_ADDRESS_VIEW_GRID_TITLE));
+
+    grid.setColumns("streetAddress", "city", "postalCode");
+
+    return grid;
+  }
+
+  private VerticalLayout createForm() {
+
+    H2 formTitle = new H2(CLIENT_ADDRESS_VIEW_FORM_TITLE);
 
     var form = new FormLayout();
     cityField.setLabel(CLIENT_ADDRESS_CITY_LABEL);
@@ -72,27 +79,41 @@ public class ClientAddressView extends VerticalLayout {
 
     form.add(streetAddress, postalCode, cityField);
 
+
+    var row = new HorizontalLayout();
+    row.add(createAddButton(), loadTemplateButton());
+
+    var column = new VerticalLayout();
+    column.add(form, row);
+
+    return column;
+  }
+
+  private Button createAddButton() {
+
     var saveButton = new Button(CLIENT_ADDRESS_ADD_CLIENT_BUTTON_LABEL);
 
     saveButton
          .addClickListener(clickEvent -> {
 
+
+           // todo:  BEAN  - Style 1.0: writeBean (fields -> bean) | Buffered Writing
            try {
-             binder.writeBean(clientAddress);
+             binder.writeBean(elevatorClientAddress);
            }
            catch (ValidationException e) {
              throw new RuntimeException(e);
            }
 
-           if (isAddressFilled(clientAddress)) {
+           if (isAddressFilled(elevatorClientAddress)) {
 
-             listAdress.add(clientAddress);
+             listAdress.add(elevatorClientAddress);
              grid.setItems(listAdress);
 
              var sucessSaving =
                   "Saved Data: %s %n %s %n %s."
-                       .formatted(clientAddress.getStreetAddress(), clientAddress.getCity(),
-                                  clientAddress.getPostalCode()
+                       .formatted(elevatorClientAddress.getStreetAddress(), elevatorClientAddress.getCity(),
+                                  elevatorClientAddress.getPostalCode()
                        );
 
              Notification.show(sucessSaving);
@@ -100,13 +121,26 @@ public class ClientAddressView extends VerticalLayout {
            } else Notification.show(APP_MESSAGE_COMPLETE_THE_FORM);
          });
 
-    var column = new VerticalLayout();
-    column.add(form, saveButton);
-
-    return column;
+    return saveButton;
   }
 
-  private boolean isAddressFilled(ClientAddress adress) {
+  private Button loadTemplateButton() {
+
+    Button button = new Button(CLIENT_ADDRESS_TEMPLATE_CLIENT_BUTTON_LABEL);
+
+    button
+         .addClickListener(event -> {
+
+           var elevatorClientAddressTemplateBean = mockedElevatorClientAddress();
+
+           // todo:  BEAN - Style 3.0: readBean (load bean in the Fields | Buffered Readind)
+           binder.readBean(elevatorClientAddressTemplateBean);
+         });
+
+    return button;
+  }
+
+  private boolean isAddressFilled(ElevatorClientAddress adress) {
 
     return
          !adress.getStreetAddress().isBlank() &&

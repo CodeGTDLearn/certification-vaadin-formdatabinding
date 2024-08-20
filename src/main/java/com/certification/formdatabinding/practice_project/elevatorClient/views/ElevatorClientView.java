@@ -1,8 +1,8 @@
 package com.certification.formdatabinding.practice_project.elevatorClient.views;
 
 import com.certification.formdatabinding.practice_project.MainView;
-import com.certification.formdatabinding.practice_project.elevatorClient.entity.Client;
-import com.certification.formdatabinding.practice_project.elevatorClient.entity.ClientAddress;
+import com.certification.formdatabinding.practice_project.elevatorClient.entity.ElevatorClient;
+import com.certification.formdatabinding.practice_project.elevatorClient.entity.ElevatorClientAddress;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
@@ -16,18 +16,18 @@ import com.vaadin.flow.router.Route;
 import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
 import static com.certification.formdatabinding.practice_project.appConfig.AppMessages.APP_MESSAGE_COMPLETE_THE_FORM;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.CLIENTS_ROUTE;
-import static com.certification.formdatabinding.practice_project.elevatorClient.config.ClientViewBinderValidationMessages.*;
-import static com.certification.formdatabinding.practice_project.elevatorClient.config.ClientViewLabels.*;
-import static com.certification.formdatabinding.practice_project.elevatorClient.config.ClientViewTitles.SERVICE_CLIENT_VIEW_FORM_TITLE;
-import static com.certification.formdatabinding.practice_project.elevatorClient.config.ClientViewTitles.SERVICE_CLIENT_VIEW_TITLE;
+import static com.certification.formdatabinding.practice_project.elevatorClient.config.ElevatorClientMessages.*;
+import static com.certification.formdatabinding.practice_project.elevatorClient.config.ElevatorClientViewLabels.*;
+import static com.certification.formdatabinding.practice_project.elevatorClient.config.ElevatorClientViewTitles.SERVICE_CLIENT_VIEW_FORM_TITLE;
+import static com.certification.formdatabinding.practice_project.elevatorClient.config.ElevatorClientViewTitles.SERVICE_CLIENT_VIEW_TITLE;
 
 @Route(value = CLIENTS_ROUTE, layout = MainView.class)
-public class ClientView extends VerticalLayout {
+public class ElevatorClientView extends VerticalLayout {
 
-  private final Client client = new Client();
-  private final ClientAddress clientAddress = new ClientAddress();
+  private final ElevatorClient elevatorClient = new ElevatorClient();
+  private final ElevatorClientAddress elevatorClientAddress = new ElevatorClientAddress();
 
-  private Binder<Client> binder = new Binder<>(Client.class);
+  private Binder<ElevatorClient> binder = new Binder<>(ElevatorClient.class);
 
   private TextField firstNameField;
   private TextField lastNameField;
@@ -37,18 +37,18 @@ public class ClientView extends VerticalLayout {
   private TextField postalCodeField;
   private TextField cityField;
 
-  public ClientView() {
+  public ElevatorClientView() {
 
-    client.setClientAddress(clientAddress);
+    elevatorClient.setElevatorClientAddress(elevatorClientAddress);
 
     H1 viewTitle = new H1(SERVICE_CLIENT_VIEW_TITLE);
     H2 formTitle = new H2(SERVICE_CLIENT_VIEW_FORM_TITLE);
 
-    var customerForm = createCustomerForm();
+    var customerForm = createForm();
 
-    addressBinder();
+    settingAddressBinder();
 
-    customerBinder();
+    settingCustomerBinder();
 
     add(
          viewTitle,
@@ -59,7 +59,7 @@ public class ClientView extends VerticalLayout {
   }
 
   //@formatter:off
-  private VerticalLayout createCustomerForm() {
+  private VerticalLayout createForm() {
 
     FormLayout form = new FormLayout();
 
@@ -75,15 +75,15 @@ public class ClientView extends VerticalLayout {
 
     saveButton
          .addClickListener(event -> {
-           if (binder.writeBeanIfValid(client)) {
+           if (binder.writeBeanIfValid(elevatorClient)) {
              Notification.show(
                   "Data Saved: %s %n %s %n %s %n %s %n %s"
                        .formatted(
-                            client.getFirstName(),
-                            client.getLastName(),
-                            client.getEmail(),
-                            client.getClientAddress().getStreetAddress(),
-                            client.getClientAddress().getCity()
+                            elevatorClient.getFirstName(),
+                            elevatorClient.getLastName(),
+                            elevatorClient.getEmail(),
+                            elevatorClient.getElevatorClientAddress().getStreetAddress(),
+                            elevatorClient.getElevatorClientAddress().getCity()
                        )
              );
            } else Notification.show(APP_MESSAGE_COMPLETE_THE_FORM);
@@ -105,14 +105,13 @@ public class ClientView extends VerticalLayout {
     return column;
   }
 
+  private void settingCustomerBinder() {
 
-  private void customerBinder() {
-
-    // Bind dos campos de texto aos atributos da classe Customer
+    // todo:  Bind dos campos de texto aos atributos da classe Customer
     binder
          .forField(firstNameField)
          .asRequired(SERVICE_CLIENT_FIRSTNAME_REQUIRED_MESSAGE)
-         .bind(Client::getFirstName, Client::setFirstName);
+         .bind(ElevatorClient::getFirstName, ElevatorClient::setFirstName);
 
     binder
          .forField(lastNameField)
@@ -122,7 +121,7 @@ public class ClientView extends VerticalLayout {
                    (lastName.length() >= 3 && lastName.length() <= 10),
               SERVICE_CLIENT_MIN_SIZE_LASTNAME_VALIDATION_MESSSAGE
          )
-         .bind(Client::getLastName, Client::setLastName);
+         .bind(ElevatorClient::getLastName, ElevatorClient::setLastName);
 
     binder
          .forField(emailField)
@@ -134,52 +133,52 @@ public class ClientView extends VerticalLayout {
                 Notification.Position.MIDDLE
            );
          })
-         .bind(Client::getEmail, Client::setEmail);
+         .bind(ElevatorClient::getEmail, ElevatorClient::setEmail);
   }
 
-  private void addressBinder() {
+  private void settingAddressBinder() {
 
-    // BINDER - Style 06: Bind dos campos de texto aos atributos da classe Address
+    // todo:  BINDER - Style 06: Bind dos campos de texto aos atributos da classe Address
     binder
          .forField(streetAddressField)
          .asRequired(SERVICE_CLIENT_STREET_REQUIRED_MESSSAGE)
          .bind("clientAddress.streetAddress");
 
-    // BINDER - Style 07: NOT NULL-SAFETY
+    // todo:  BINDER - Style 07: NOT NULL-SAFETY
     binder.forField(postalCodeField)
           .asRequired(SERVICE_CLIENT_POSTALCODE_REQUIRED_MESSSAGE)
           .bind(
 
                // GETTER => Customer::getAddress -> getPostalCode
-               client1 -> client1.getClientAddress().getPostalCode(),
+               elevatorClient1 -> elevatorClient1.getElevatorClientAddress().getPostalCode(),
 
                // SETTER => Customer::getAddress -> setPostalCode
-               (clientToBind, fieldContent) ->
-                    clientToBind.getClientAddress().setPostalCode(fieldContent)
+               (elevatorClientToBind, fieldContent) ->
+                    elevatorClientToBind.getElevatorClientAddress().setPostalCode(fieldContent)
           );
 
-    // BINDER - Style 07.1: Applying NULL-SAFETY
+    // todo:  BINDER - Style 07.1: Applying NULL-SAFETY
     // Lambda Custom Validator - Checking Null
     binder
          .forField(cityField)
          .bind(
 
               // GETTER => Customer::getAddress -> getCity
-              client -> {
-                return client.getClientAddress() == null
+              elevatorClient -> {
+                return elevatorClient.getElevatorClientAddress() == null
                      ? null
-                     : client.getClientAddress().getCity();
+                     : elevatorClient.getElevatorClientAddress().getCity();
               },
 
               // Lambda Custom Validator: IF cityField is not BLANK
               // SETTER => Customer::getAddress -> setCity
-              (client, fieldContent) -> {
-                if (client.getClientAddress() != null)
-                  client.getClientAddress().setCity(fieldContent);
+              (elevatorClient, fieldContent) -> {
+                if (elevatorClient.getElevatorClientAddress() != null)
+                  elevatorClient.getElevatorClientAddress().setCity(fieldContent);
 
                 if (fieldContent.isBlank())
-                  client.getClientAddress().setCity("Check the 'Postal-Code City'");
-                else client.getClientAddress().setCity(fieldContent);
+                  elevatorClient.getElevatorClientAddress().setCity("Check the 'Postal-Code City'");
+                else elevatorClient.getElevatorClientAddress().setCity(fieldContent);
               }
          );
   }

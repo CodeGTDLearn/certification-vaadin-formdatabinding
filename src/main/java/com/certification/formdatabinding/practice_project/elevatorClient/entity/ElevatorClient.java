@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Client {
+public class ElevatorClient {
     private String firstName;
     private String lastName;
     private String email;
-    private ClientAddress clientAddress;
+    private ElevatorClientAddress elevatorClientAddress;
 }
