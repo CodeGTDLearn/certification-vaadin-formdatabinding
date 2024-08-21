@@ -63,15 +63,15 @@ public class ElevatorClientView extends VerticalLayout {
 
     FormLayout form = new FormLayout();
 
-    firstNameField = new TextField(SERVICE_CLIENT_FIRSTNAME_FIELD_LABEL);
-    lastNameField = new TextField(SERVICE_CLIENT_LASTNAME_FIELD_LABEL);
-    emailField = new TextField(SERVICE_CLIENT_EMAIL_FIELD_LABEL);
+    firstNameField = new TextField(FIRSTNAME_FIELD_LABEL);
+    lastNameField = new TextField(LASTNAME_FIELD_LABEL);
+    emailField = new TextField(EMAIL_FIELD_LABEL);
 
-    streetAddressField = new TextField(SERVICE_CLIENT_STREET_FIELD_LABEL);
-    postalCodeField = new TextField(SERVICE_CLIENT_POSTALCODE_FIELD_LABEL);
-    cityField = new TextField(SERVICE_CLIENT_CITY_FIELD_LABEL);
+    streetAddressField = new TextField(STREET_FIELD_LABEL);
+    postalCodeField = new TextField(POSTALCODE_FIELD_LABEL);
+    cityField = new TextField(CITY_FIELD_LABEL);
 
-    Button saveButton = new Button(SERVICE_CLIENT_ADD_CLIENT_BUTTON_LABEL);
+    Button saveButton = new Button(ADD_BUTTON_LABEL);
 
     saveButton
          .addClickListener(event -> {
@@ -107,7 +107,7 @@ public class ElevatorClientView extends VerticalLayout {
 
   private void settingCustomerBinder() {
 
-    // todo:  Bind dos campos de texto aos atributos da classe Customer
+    // todo: BINDER: Bind dos campos de texto aos atributos da classe Customer
     binder
          .forField(firstNameField)
          .asRequired(SERVICE_CLIENT_FIRSTNAME_REQUIRED_MESSAGE)
@@ -138,13 +138,13 @@ public class ElevatorClientView extends VerticalLayout {
 
   private void settingAddressBinder() {
 
-    // todo:  BINDER - Style 06: Bind dos campos de texto aos atributos da classe Address
+    // todo: BINDER: Bind dos campos de texto aos atributos da classe Address
     binder
          .forField(streetAddressField)
          .asRequired(SERVICE_CLIENT_STREET_REQUIRED_MESSSAGE)
          .bind("clientAddress.streetAddress");
 
-    // todo:  BINDER - Style 07: NOT NULL-SAFETY
+    // todo: BINDER: NOT NULL-SAFETY
     binder.forField(postalCodeField)
           .asRequired(SERVICE_CLIENT_POSTALCODE_REQUIRED_MESSSAGE)
           .bind(
@@ -157,7 +157,7 @@ public class ElevatorClientView extends VerticalLayout {
                     elevatorClientToBind.getElevatorClientAddress().setPostalCode(fieldContent)
           );
 
-    // todo:  BINDER - Style 07.1: Applying NULL-SAFETY
+    // todo: BINDER: Applying NULL-SAFETY
     // Lambda Custom Validator - Checking Null
     binder
          .forField(cityField)

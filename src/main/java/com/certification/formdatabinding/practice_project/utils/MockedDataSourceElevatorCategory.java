@@ -4,6 +4,7 @@ package com.certification.formdatabinding.practice_project.utils;
 import com.certification.formdatabinding.practice_project.elevatorCategory.ElevatorCategory;
 import com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCategoryTypes;
 import com.certification.formdatabinding.practice_project.elevatorClient.entity.ElevatorClientAddress;
+import com.certification.formdatabinding.practice_project.elevatorParts.ElevatorParts;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +48,17 @@ public class MockedDataSourceElevatorCategory {
          "Baseline Road",
          "Ottawa",
          "t3c 1p5"
+    );
+
+  }
+
+  public static ElevatorParts mockedElevatorPart() {
+
+    return new ElevatorParts(
+         "Engine",
+         "Siemens",
+         "Piece is reponsible to up and lift the Elevator",
+         3
     );
 
   }

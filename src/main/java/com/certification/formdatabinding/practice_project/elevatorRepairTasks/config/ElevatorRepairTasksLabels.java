@@ -2,7 +2,7 @@ package com.certification.formdatabinding.practice_project.elevatorRepairTasks.c
 
 public class ElevatorRepairTasksLabels {
 
-  public static final String REPAIR_TASK_LABEL = "Task";
-  public static final String REPAIR_TASK_DUEDATE_LABEL = "DueDate";
-  public static final String REPAIR_ADD_TASK_BUTTON_LABEL = "Add Task";
+  public static final String TASK_LABEL = "Task";
+  public static final String DUEDATE_LABEL = "DueDate";
+  public static final String ADD_TASK_BUTTON_LABEL = "Add Task";
 }

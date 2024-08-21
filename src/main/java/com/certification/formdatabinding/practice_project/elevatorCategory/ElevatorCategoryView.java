@@ -57,6 +57,17 @@ public class ElevatorCategoryView extends VerticalLayout {
 
     H2 titleView = new H2(ELEVATORS_CATEGORY_VIEW_TITLE);
 
+    add(
+         titleView,
+         createDivider(),
+         createForm(),
+         createDivider(),
+         createGrid()
+    );
+  }
+
+  private Grid<ElevatorCategory>  createGrid() {
+
     H2 gridTitle = new H2(ELEVATOR_CATEGORY_VIEW_GRID_TITLE);
     gridCategoryView
          .setColumns(
@@ -66,16 +77,7 @@ public class ElevatorCategoryView extends VerticalLayout {
               "speed",
               "maxWeight"
          );
-
-    add(
-         titleView,
-         createDivider(),
-         createForm(),
-         createDivider(),
-         gridTitle,
-         gridCategoryView
-    );
-
+    return gridCategoryView;
   }
 
   private void settingBinder() {
@@ -90,7 +92,7 @@ public class ElevatorCategoryView extends VerticalLayout {
          .bind(ElevatorCategory::getCategoryName, ElevatorCategory::setCategoryName);
 
 
-    // todo:  CONVERTER - Style 1.0: Converter / Validator Seriados
+    // todo: CONVERTER: Converter / Validator Seriados
     // - Converter + Validator segue a 'sequencia' de validacao/conversao disposta
     binder
          .forField(speedField)
@@ -101,7 +103,7 @@ public class ElevatorCategoryView extends VerticalLayout {
          .bind("speed"); //Bean Attribute
 
 
-    // todo: CONVERTER - Style 2.0: Custom Converter
+    // todo: CONVERTER: Custom Converter
     binder
          .forField(capacityField)
          .withConverter(new ElevatorCapacityCustomConverter())
@@ -114,11 +116,11 @@ public class ElevatorCategoryView extends VerticalLayout {
 
     H2 title = new H2(ELEVATOR_CATEGORY_FORM_TITLE);
 
-    categoryField.setPlaceholder(CATEGORY_TYPE_FIELD_PLACEHOLDER);
-    speedField.setPlaceholder(SPEED_FIELD_PLACEHOLDER);
-    brandField.setPlaceholder(BRAND_FIELD_PLACEHOLDER);
-    capacityField.setPlaceholder(CAPACITY_FIELD_PLACEHOLDER);
-    weightField.setPlaceholder(MAXWEIGHT_FIELD_PLACEHOLDER);
+    categoryField.setPlaceholder(CATEGORY_TYPE_PLACEHOLDER);
+    speedField.setPlaceholder(SPEED_PLACEHOLDER);
+    brandField.setPlaceholder(BRAND_PLACEHOLDER);
+    capacityField.setPlaceholder(CAPACITY_PLACEHOLDER);
+    weightField.setPlaceholder(MAXWEIGHT_PLACEHOLDER);
 
     form.add(
          categoryField,
@@ -137,7 +139,10 @@ public class ElevatorCategoryView extends VerticalLayout {
          );
 
     var column = new VerticalLayout();
-    var row = new HorizontalLayout(createAddButton(), loadTemplateButton());
+    var row = new HorizontalLayout(
+         createAddButton(),
+         createLoadTemplateButton()
+    );
     column
          .add(
               title,
@@ -148,7 +153,7 @@ public class ElevatorCategoryView extends VerticalLayout {
     return column;
   }
 
-  private Button loadTemplateButton() {
+  private Button createLoadTemplateButton() {
 
     Button button = new Button(SUGGEST_ELEVATORS_BUTTON_LABEL);
 
@@ -157,7 +162,8 @@ public class ElevatorCategoryView extends VerticalLayout {
 
            categoryBean = randomMockedElevatorCategory();
 
-           // todo: BEAN - Style 2.0: setBean (Mudancas no Field, refletem no Bean RealTime - Unbuffered Changes)
+           // todo: BEAN: setBean (Mudancas no Field, refletem no Bean RealTime -
+           //  Unbuffered Changes)
            // - Set the Bean as "DataSource"
            // - Fields are Updated by the Bean
            // - Beans is updated by the Fields
@@ -176,13 +182,14 @@ public class ElevatorCategoryView extends VerticalLayout {
 
            Notification.show("Before Updating - The Bean is: " + categoryBean.toString());
 
-//          todo: BEAN - Style 01: writeBeanIfValid
-//             - Beans is updated by the Fields IF 'ALL Fields pass in Validation'
-//             - IF Fail in Validation: don't update + return false
-//
-//          FieldLevel 1) Field Validators: IF Pass, go to the 'STAGE 02'(BeanLevel)
-//          BeanLevel  2) Bean Attributes: IF no errors happens, write in the Bean ->
-//                        IF fails - Everything is REVERTED to the STATE 'before' STAGE 01(FieldLevel)
+           //  todo: BEAN: writeBeanIfValid
+           //  - Beans is updated by the Fields IF 'ALL Fields pass in Validation'
+           //  - IF Fail in Validation: don't update + return false
+           //
+           //          FieldLevel 1) Field Validators: IF Pass, go to the 'STAGE 02'(BeanLevel)
+           //          BeanLevel  2) Bean Attributes: IF no errors happens, write in the Bean ->
+           //                        IF fails - Everything is REVERTED to the STATE 'before'
+           //                        STAGE 01(FieldLevel)
 
            if (binder.writeBeanIfValid(categoryBean)) {
              categories.add(categoryBean);
@@ -190,7 +197,8 @@ public class ElevatorCategoryView extends VerticalLayout {
 
              Notification.show("After update - The Bean updating: " + categoryBean.toString());
 
-             // todo: BEAN - Style 2.0: setBean (Mudancas no Field, refletem no Bean RealTime - Unbuffered Changes)
+             // todo: BEAN: setBean (Mudancas no Field, refletem no Bean RealTime -
+             //  Unbuffered Changes)
              // - Set the Bean as "DataSource"
              // - Fields are Updated by the Bean
              // - Beans is updated by the Fields

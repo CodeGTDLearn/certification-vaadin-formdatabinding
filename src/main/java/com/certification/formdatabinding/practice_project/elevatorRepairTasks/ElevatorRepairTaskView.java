@@ -36,8 +36,8 @@ public class ElevatorRepairTaskView extends VerticalLayout {
     H1 viewTitle = new H1(REPAIR_TASK_VIEW_TITLE);
     H2 formTitle = new H2(REPAIR_TASK_VIEW_FORM_TITLE);
 
-    var taskField = new TextField(REPAIR_TASK_LABEL);
-    var dueDateTaskField = new DatePicker(REPAIR_TASK_DUEDATE_LABEL);
+    var taskField = new TextField(TASK_LABEL);
+    var dueDateTaskField = new DatePicker(DUEDATE_LABEL);
     var addTaskButton = createAddButton();
     var row = new HorizontalLayout(taskField, dueDateTaskField, addTaskButton);
     row.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
@@ -59,7 +59,7 @@ public class ElevatorRepairTaskView extends VerticalLayout {
 
   private Button createAddButton() {
 
-    Button button = new Button(REPAIR_ADD_TASK_BUTTON_LABEL);
+    Button button = new Button(ADD_TASK_BUTTON_LABEL);
 
     button
          .addClickListener(event -> {
@@ -86,7 +86,7 @@ public class ElevatorRepairTaskView extends VerticalLayout {
     binderTask.bind(field, ElevatorRepairTask::getTask, ElevatorRepairTask::setTask);
 
     // binderTask [forField/bind]: "Link" between "field" -> Entity_Attribute
-    // todo:  VALIDATOR - Style 4.0: Multiplos Validators
+    // todo:  VALIDATOR: Multiplos Validators
     // - Multiplos Validators
     binderTask
          .forField(datePicker)
@@ -99,7 +99,7 @@ public class ElevatorRepairTaskView extends VerticalLayout {
               REPAIR_TASK_DUEDATE_VALIDATION_MESSAGE
          )
 
-         // todo:  BINDER - Style 05: Permitido pelo 'new Binder<>(Order.class)'
+         // todo:  BINDER: Permitido pelo 'new Binder<>(Order.class)'
          .bind(
               elevatorRepairTask -> datePicker.getValue(), // representa o get
               (dateEntity, newDatePicker) -> dateEntity.setDueDate(newDatePicker.toString())

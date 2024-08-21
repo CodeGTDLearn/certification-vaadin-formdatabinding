@@ -58,10 +58,10 @@ public class ElevatorServiceOrderView extends VerticalLayout {
 
   private void createForm() {
 
-    customerNameField = new TextField(CUSTOMER_NAME_LABEL);
-    customerEmailField = new EmailField(CUSTOMER_EMAIL_LABEL);
+    customerNameField = new TextField(NAME_LABEL);
+    customerEmailField = new EmailField(EMAIL_LABEL);
     deadLineField = new DatePicker(DEADLINE_LABEL, LocalDate.now());
-    elevatorQtdeField = new IntegerField(ELEVATOR_QTD_LABEL);
+    elevatorQtdeField = new IntegerField(QTD_LABEL);
     elevatorQtdeField.setValue(0);
 
     elevatorCategoryField = new Select<>();
@@ -89,12 +89,12 @@ public class ElevatorServiceOrderView extends VerticalLayout {
               new FormLayout.ResponsiveStep("500px", 2)
          );
 
-    Button submitOrder = new Button(ADD_SERVICE_ORDER_LABEL, event -> {
+    Button submitOrder = new Button(ADD_ORDER_BUTTON_LABEL, event -> {
       try {
 
         var myElevatorServiceOrder = new ElevatorServiceOrder();
 
-        // todo:  writeBean: write 'fields-values' in an Object(myOrder)
+        // todo: BEAN: writeBean: write 'fields-values' in an Object(myOrder)
         binder.writeBean(myElevatorServiceOrder);
         processOrder();
       }
@@ -113,29 +113,29 @@ public class ElevatorServiceOrderView extends VerticalLayout {
   private void settingBinder() {
 
     binder
-         // todo:  BINDER - Style 01: Bind para "propertName"(attributo)
+         // todo:  BINDER: Bind para "propertName"(attributo)
          // Permitido pelo 'new Binder<>(Order.class)'
          // Permitido na AUSENCIA de "Validators"
          // Usado qdo o attributo tem BeanValidation
          .bind(customerNameField, "customerName");
 
-    // todo:  VALIDATOR - Style 3.0: Vaadin Standard Validator
+    // todo:  VALIDATOR: Vaadin Standard Validator
     // - Validator Standard do Vaadin
     binder
          .forField(customerEmailField)
          .withValidator(new EmailValidator(EMAIL_VALIDATION_MESSSAGE))
 
-         // todo:  BINDER - Style 02: Permitido pelo 'new Binder<>(Order.class)'
+         // todo:  BINDER: Permitido pelo 'new Binder<>(Order.class)'
          .bind("customerEmail");
 
 
-    // todo:  VALIDATOR - Style 1.0: Lambda Validator for Numbers
+    // todo:  VALIDATOR: Lambda Validator for Numbers
     // - Validator customizado com Lambda p/ numbers
     binder
          .forField(elevatorQtdeField)
          .withValidator(quantity -> quantity > 0, QTDE_BIGGER_THAN_ZERO_VALIDATION_MESSSAGE)
 
-         // todo:  BINDER - Style 03: Permitido pelo 'new Binder<>(Order.class)' or 'new Binder<>()'
+         // todo:  BINDER: Permitido pelo 'new Binder<>(Order.class)' or 'new Binder<>()'
          .bind(ElevatorServiceOrder::getElevatorsQuantity,
                ElevatorServiceOrder::setElevatorsQuantity
          );
@@ -147,7 +147,7 @@ public class ElevatorServiceOrderView extends VerticalLayout {
               elevatorServiceOrder.setElevatorCategory(categoryFieldContent)
     );
 
-    // todo:  VALIDATOR - Style 2.0: Lambda Validator for Date
+    // todo:  VALIDATOR: Lambda Validator for Date
     // - Validator customizado com Lambda p/ data
     binder
          .forField(deadLineField)

@@ -10,4 +10,5 @@ public class AppRoutes {
   public static final String CLIENTS_ROUTE = "clients";
   public static final String CLIENTS_ADDRESS_ROUTE = "clients-addresses";
   public static final String ELEVATOR_CATEGORY_ROUTE = "elevator-category";
+  public static final String ELEVATOR_PARTS_ROUTE = "elevator-parts";
 }

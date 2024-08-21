@@ -1,9 +1,10 @@
 package com.certification.formdatabinding.practice_project;
 
 import com.certification.formdatabinding.practice_project.elevatorCategory.ElevatorCategoryView;
-import com.certification.formdatabinding.practice_project.elevatorRepairTasks.ElevatorRepairTaskView;
 import com.certification.formdatabinding.practice_project.elevatorClient.views.ElevatorClientAddressView;
 import com.certification.formdatabinding.practice_project.elevatorClient.views.ElevatorClientView;
+import com.certification.formdatabinding.practice_project.elevatorParts.ElevatorPartsView;
+import com.certification.formdatabinding.practice_project.elevatorRepairTasks.ElevatorRepairTaskView;
 import com.certification.formdatabinding.practice_project.elevatorServiceOrder.ElevatorServiceOrderView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -35,6 +36,7 @@ public class MainView extends AppLayout {
     menuBar.add(new RouterLink(CLIENTS_MENU_ITEM, ElevatorClientView.class));
     menuBar.add(new RouterLink(CLIENTS_ADDRESS_MENU_ITEM, ElevatorClientAddressView.class));
     menuBar.add(new RouterLink(ELEVATOR_CATEGORY_MENU_ITEM, ElevatorCategoryView.class));
+    menuBar.add(new RouterLink(ELEVATOR_PARTS_MENU_ITEM, ElevatorPartsView.class));
 
     addToDrawer(menuBar);
   }

@@ -73,9 +73,9 @@ public class ElevatorClientAddressView extends VerticalLayout {
     H2 formTitle = new H2(CLIENT_ADDRESS_VIEW_FORM_TITLE);
 
     var form = new FormLayout();
-    cityField.setLabel(CLIENT_ADDRESS_CITY_LABEL);
-    streetAddress.setLabel(CLIENT_ADDRESS_STREET_LABEL);
-    postalCode.setLabel(CLIENT_ADDRESS_POSTALCODE_LABEL);
+    cityField.setLabel(CITY_LABEL);
+    streetAddress.setLabel(STREET_LABEL);
+    postalCode.setLabel(POSTALCODE_LABEL);
 
     form.add(streetAddress, postalCode, cityField);
 
@@ -91,13 +91,13 @@ public class ElevatorClientAddressView extends VerticalLayout {
 
   private Button createAddButton() {
 
-    var saveButton = new Button(CLIENT_ADDRESS_ADD_CLIENT_BUTTON_LABEL);
+    var saveButton = new Button(ADD_CLIENT_BUTTON_LABEL);
 
     saveButton
          .addClickListener(clickEvent -> {
 
 
-           // todo:  BEAN  - Style 1.0: writeBean (fields -> bean) | Buffered Writing
+           // todo:  BEAN: writeBean (fields -> bean) | Buffered Writing
            try {
              binder.writeBean(elevatorClientAddress);
            }
@@ -126,14 +126,14 @@ public class ElevatorClientAddressView extends VerticalLayout {
 
   private Button loadTemplateButton() {
 
-    Button button = new Button(CLIENT_ADDRESS_TEMPLATE_CLIENT_BUTTON_LABEL);
+    Button button = new Button(TEMPLATE_CLIENT_BUTTON_LABEL);
 
     button
          .addClickListener(event -> {
 
            var elevatorClientAddressTemplateBean = mockedElevatorClientAddress();
 
-           // todo:  BEAN - Style 3.0: readBean (load bean in the Fields | Buffered Readind)
+           // todo:  BEAN: readBean (load bean in the Fields | Buffered Readind)
            binder.readBean(elevatorClientAddressTemplateBean);
          });
 
