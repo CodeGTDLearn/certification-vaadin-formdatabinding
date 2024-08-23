@@ -1,7 +1,9 @@
 package com.certification.formdatabinding.practice_project.viewComponents;
 
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.notification.Notification;
+
+import static com.vaadin.flow.component.notification.Notification.Position;
+import static com.vaadin.flow.component.notification.Notification.show;
 
 public class CustomComponents {
   public static Div createDivider() {
@@ -16,9 +18,10 @@ public class CustomComponents {
     return divider;
   }
 
-  public static void showNotification(String text, Notification.Position position) {
-    Notification notification = Notification.show(text);
+  public static void showNotification(String text, Position position) {
+
+    var notification = show(text);
     notification.setPosition(position);
-    notification.setDuration(3000); // Duração da notificação em milissegundos
+    notification.setDuration(5000); // Duração da notificação em milissegundos
   }
 }

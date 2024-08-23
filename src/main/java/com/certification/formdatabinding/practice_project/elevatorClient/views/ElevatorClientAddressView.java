@@ -29,7 +29,7 @@ import static com.certification.formdatabinding.practice_project.elevatorClient.
 @Route(value = CLIENTS_ADDRESS_ROUTE, layout = MainView.class)
 public class ElevatorClientAddressView extends VerticalLayout {
 
-  // BINDER - Style 09: Automatic Binding according Entity-Attribute name
+  // BINDER: Automatic Binding according Entity-Attribute name
   private TextField streetAddress = new TextField();
 
   @PropertyId("city")
@@ -79,7 +79,6 @@ public class ElevatorClientAddressView extends VerticalLayout {
 
     form.add(streetAddress, postalCode, cityField);
 
-
     var row = new HorizontalLayout();
     row.add(createAddButton(), loadTemplateButton());
 
@@ -97,7 +96,7 @@ public class ElevatorClientAddressView extends VerticalLayout {
          .addClickListener(clickEvent -> {
 
 
-           // todo:  BEAN: writeBean (fields -> bean) | Buffered Writing
+           // BEAN: writeBean (fields -> bean) | Buffered Writing
            try {
              binder.writeBean(elevatorClientAddress);
            }
@@ -126,14 +125,14 @@ public class ElevatorClientAddressView extends VerticalLayout {
 
   private Button loadTemplateButton() {
 
-    Button button = new Button(TEMPLATE_CLIENT_BUTTON_LABEL);
+    var button = new Button(TEMPLATE_CLIENT_BUTTON_LABEL);
 
     button
          .addClickListener(event -> {
 
            var elevatorClientAddressTemplateBean = mockedElevatorClientAddress();
 
-           // todo:  BEAN: readBean (load bean in the Fields | Buffered Readind)
+           // BEAN: readBean (load bean in the Fields | Buffered Readind)
            binder.readBean(elevatorClientAddressTemplateBean);
          });
 

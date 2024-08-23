@@ -5,7 +5,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -22,10 +21,11 @@ import static com.certification.formdatabinding.practice_project.elevatorParts.c
 import static com.certification.formdatabinding.practice_project.elevatorParts.config.ElevatorPartTitles.ELEVATORS_PARTS_VIEW_TITLE;
 import static com.certification.formdatabinding.practice_project.elevatorParts.config.ElevatorPartsMessages.MIN_TEXT_DESCRIPTION_MESSSAGE;
 import static com.certification.formdatabinding.practice_project.elevatorParts.config.ElevatorPartsMessages.TEXT_MANUFACTER_MESSSAGE;
-import static com.certification.formdatabinding.practice_project.utils.MockedDataSourceElevatorCategory.mockedElevatorPart;
+import static com.certification.formdatabinding.practice_project.utils.MockedDataSourceElevatorCategory.randomMockedElevatorPart;
 import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
 import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.showNotification;
 import static com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
+import static java.lang.Character.isUpperCase;
 
 @Route(value = ELEVATOR_PARTS_ROUTE, layout = MainView.class)
 public class ElevatorPartsView extends VerticalLayout {
@@ -33,13 +33,12 @@ public class ElevatorPartsView extends VerticalLayout {
   BeanValidationBinder<ElevatorParts> binder =
        new BeanValidationBinder<>(ElevatorParts.class);
 
-  private final TextField partNameField = new TextField();
-  private final TextField manufacturerField = new TextField();
-  private final TextArea descriptionField = new TextArea();
-  private final IntegerField quantityField = new IntegerField();
+  private TextField partNameField = new TextField();
+  private TextField manufacturerField = new TextField();
+  private TextArea descriptionField = new TextArea();
+  private IntegerField quantityField = new IntegerField();
 
   private H2 UI_Item_H2 = new H2();
-  private H3 UI_Item_H3 = new H3();
 
   private ElevatorParts elevatorPart = new ElevatorParts();
 
@@ -50,22 +49,26 @@ public class ElevatorPartsView extends VerticalLayout {
     H1 titleView = new H1(ELEVATORS_PARTS_VIEW_TITLE);
     H2 formTitle = new H2(ELEVATORS_PARTS_FORM_TITLE);
 
-    HorizontalLayout rowTitle = new HorizontalLayout();
+    var rowTitles = new HorizontalLayout();
     UI_Item_H2.getStyle()
               .setColor("Blue");
-    UI_Item_H3.getStyle()
-              .setColor("Red");
+    rowTitles.add(formTitle, UI_Item_H2);
 
-    rowTitle.add(formTitle, UI_Item_H2, UI_Item_H3);
+    var rowButtons = new HorizontalLayout(
+         createSaveDraftButton(),
+         createResumeLaterButton(),
+         createMostCommonPartsButton()
+    );
+    rowButtons.setAlignItems(Alignment.CENTER);
+    rowButtons.setWidthFull();
 
     add(
          titleView,
          createDivider(),
-         rowTitle,
+         rowTitles,
          createForm(),
-         createUiChangerButton()
+         rowButtons
     );
-
   }
 
   private FormLayout createForm() {
@@ -77,7 +80,7 @@ public class ElevatorPartsView extends VerticalLayout {
     descriptionField.setPlaceholder(DESCRIPTION_PLACEHOLDER);
     descriptionField.setHeight("10em");
 
-    FormLayout formLayout = new FormLayout();
+    var formLayout = new FormLayout();
 
     formLayout
          .add(
@@ -108,10 +111,8 @@ public class ElevatorPartsView extends VerticalLayout {
     binder.bind(manufacturerField, "manufacturer");
     binder.bind(descriptionField, "description");
 
-    // todo: BINDER: BeanValidationBinder
-    binder
-         .forField(quantityField)
-         .bind("quantity");
+    // BINDER: BeanValidationBinder (check Bean Validation)
+    binder.forField(quantityField).bind("quantity");
 
     binder
          .forField(descriptionField)
@@ -126,38 +127,27 @@ public class ElevatorPartsView extends VerticalLayout {
          .forField(manufacturerField)
          .withValidator(
               (text) -> text.length() >= 3 &&
-                        Character.isUpperCase(text.charAt(0)),
+                        isUpperCase(text.charAt(0)),
               TEXT_MANUFACTER_MESSSAGE
          )
-         .bind("description");
+         .bind("manufacturer");
   }
 
-  private Button createUiChangerButton() {
+  private Button createMostCommonPartsButton() {
 
     var button = new Button(ADD_PART_BUTTON_LABEL);
 
-    elevatorPart = mockedElevatorPart();
-
-    // todo:  ReadOnlyHasValue: Exiba(ReadOnly) Entity-Data em Elementos de UI
-    ReadOnlyHasValue<String> UI_Item_H2_changer =
-         new ReadOnlyHasValue<>(
-              text -> UI_Item_H2.setText(text)
-         );
-
-    ReadOnlyHasValue<String> UI_Item_H3_changer =
-         new ReadOnlyHasValue<>(
-              text -> UI_Item_H3.setText(text)
-         );
+    // READONLYHASVALUE: Exiba(ReadOnly) Entity-Data to UI-Items
+    var H2_UI_changer = new ReadOnlyHasValue<String>(
+         text -> UI_Item_H2.setText(text)
+    );
 
     binder
-         .forField(UI_Item_H2_changer)
+         .forField(H2_UI_changer)
          .bind(ElevatorParts::getPartName, null);
 
-    binder
-         .forField(UI_Item_H3_changer)
-         .bind(ElevatorParts::getManufacturer, null);
-
     button.addClickListener(event -> {
+      var elevatorPart = randomMockedElevatorPart();
       binder.readBean(elevatorPart);
     });
 
@@ -168,12 +158,13 @@ public class ElevatorPartsView extends VerticalLayout {
 
     var button = new Button(SAVE_DRAFT_BUTTON_LABEL);
 
-    showNotification("Antes do draft simples", Notification.Position.MIDDLE);
+    showBean("Antes (Simples): ");
 
+    // BEAN: writeBeanAsDraft (Simple)
+    // - Salva os campos validos + invalidos(colocal null)
     button.addClickListener(event -> {
       binder.writeBeanAsDraft(elevatorPart);
-
-      showNotification("Antes do draft simples", Notification.Position.MIDDLE);
+      showBean("Depois (Simples): ");
     });
 
     return button;
@@ -183,13 +174,27 @@ public class ElevatorPartsView extends VerticalLayout {
 
     var button = new Button(RESUME_LATER_BUTTON_LABEL);
 
-    showNotification("Antes do draft force", Notification.Position.MIDDLE);
+    showBean("Antes (Forced): ");
 
+    // BEAN: writeBeanAsDraft (Forced)
+    // - Salva os campos validos + invalidos(salva mesmo/incluindo a invalidez)
     button.addClickListener(event -> {
       binder.writeBeanAsDraft(elevatorPart, true);
-      showNotification("Depois do draft force", Notification.Position.MIDDLE);
+      showBean("Apos (Forced): ");
     });
 
     return button;
+  }
+
+  private void showBean(String moment) {
+
+    showNotification(
+         "%s: %s"
+              .formatted(
+                   moment,
+                   elevatorPart.toString()
+              ),
+         Notification.Position.MIDDLE
+    );
   }
 }

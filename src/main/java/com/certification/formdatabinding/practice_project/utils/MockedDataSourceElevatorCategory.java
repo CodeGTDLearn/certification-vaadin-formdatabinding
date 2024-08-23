@@ -1,6 +1,5 @@
 package com.certification.formdatabinding.practice_project.utils;
 
-
 import com.certification.formdatabinding.practice_project.elevatorCategory.ElevatorCategory;
 import com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCategoryTypes;
 import com.certification.formdatabinding.practice_project.elevatorClient.entity.ElevatorClientAddress;
@@ -9,7 +8,6 @@ import com.certification.formdatabinding.practice_project.elevatorParts.Elevator
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
 
 public class MockedDataSourceElevatorCategory {
 
@@ -52,15 +50,27 @@ public class MockedDataSourceElevatorCategory {
 
   }
 
-  public static ElevatorParts mockedElevatorPart() {
+  public static ElevatorParts randomMockedElevatorPart() {
 
-    return new ElevatorParts(
-         "Engine",
-         "Siemens",
-         "Piece is reponsible to up and lift the Elevator",
-         3
-    );
+    Random random = new Random();
 
+    String[] names = {"Engine", "Door", "Cable"};
+    String[] manufacturers = {"Siemens", "Otis", "Kone"};
+    String[] descriptions = {
+         "Piece is responsible to up",
+         "Controls the openingdoors",
+         "Used to select the floor",
+         "Supports the car and counterweight",
+         "Detects the elevator car"
+    };
+    int[] quantities = {1, 2, 3};
+
+    var name = names[random.nextInt(names.length)];
+    var manufacturer = manufacturers[random.nextInt(manufacturers.length)];
+    var description = descriptions[random.nextInt(descriptions.length)];
+    int quantity = quantities[random.nextInt(quantities.length)];
+
+    return new ElevatorParts(name, manufacturer, description, quantity);
   }
 
   public static ElevatorCategory randomMockedElevatorCategory() {

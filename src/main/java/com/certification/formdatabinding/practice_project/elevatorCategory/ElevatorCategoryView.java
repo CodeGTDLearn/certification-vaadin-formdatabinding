@@ -92,7 +92,7 @@ public class ElevatorCategoryView extends VerticalLayout {
          .bind(ElevatorCategory::getCategoryName, ElevatorCategory::setCategoryName);
 
 
-    // todo: CONVERTER: Converter / Validator Seriados
+    // CONVERTER: Converter / Validator Seriados
     // - Converter + Validator segue a 'sequencia' de validacao/conversao disposta
     binder
          .forField(speedField)
@@ -103,7 +103,7 @@ public class ElevatorCategoryView extends VerticalLayout {
          .bind("speed"); //Bean Attribute
 
 
-    // todo: CONVERTER: Custom Converter
+    // CONVERTER: Custom Converter
     binder
          .forField(capacityField)
          .withConverter(new ElevatorCapacityCustomConverter())
@@ -155,14 +155,14 @@ public class ElevatorCategoryView extends VerticalLayout {
 
   private Button createLoadTemplateButton() {
 
-    Button button = new Button(SUGGEST_ELEVATORS_BUTTON_LABEL);
+    var button = new Button(SUGGEST_ELEVATORS_BUTTON_LABEL);
 
     button
          .addClickListener(event -> {
 
            categoryBean = randomMockedElevatorCategory();
 
-           // todo: BEAN: setBean (Mudancas no Field, refletem no Bean RealTime -
+           // BEAN: setBean (Mudancas no Field, refletem no Bean RealTime -
            //  Unbuffered Changes)
            // - Set the Bean as "DataSource"
            // - Fields are Updated by the Bean
@@ -175,14 +175,14 @@ public class ElevatorCategoryView extends VerticalLayout {
 
   private Button createAddButton() {
 
-    Button button = new Button(ADD_ELEVATORS_BUTTON_LABEL);
+    var button = new Button(ADD_ELEVATORS_BUTTON_LABEL);
 
     button
          .addClickListener(event -> {
 
            Notification.show("Before Updating - The Bean is: " + categoryBean.toString());
 
-           //  todo: BEAN: writeBeanIfValid
+           //  BEAN: writeBeanIfValid
            //  - Beans is updated by the Fields IF 'ALL Fields pass in Validation'
            //  - IF Fail in Validation: don't update + return false
            //
@@ -197,7 +197,7 @@ public class ElevatorCategoryView extends VerticalLayout {
 
              Notification.show("After update - The Bean updating: " + categoryBean.toString());
 
-             // todo: BEAN: setBean (Mudancas no Field, refletem no Bean RealTime -
+             // BEAN: setBean (Mudancas no Field, refletem no Bean RealTime -
              //  Unbuffered Changes)
              // - Set the Bean as "DataSource"
              // - Fields are Updated by the Bean

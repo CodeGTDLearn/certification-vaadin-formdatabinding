@@ -59,14 +59,14 @@ public class ElevatorRepairTaskView extends VerticalLayout {
 
   private Button createAddButton() {
 
-    Button button = new Button(ADD_TASK_BUTTON_LABEL);
+    var button = new Button(ADD_TASK_BUTTON_LABEL);
 
     button
          .addClickListener(event -> {
 
-           ElevatorRepairTask newTask = new ElevatorRepairTask();
+           var newTask = new ElevatorRepairTask();
 
-           // binderTask [writeBeanIfValid]:
+           // BINDER: writeBeanIfValid
            // - check Validation of AllFields +
            // - 'write' "Field-Content" para "Entity-Attribute"
            if (binderTask.writeBeanIfValid(newTask)) {
@@ -80,14 +80,14 @@ public class ElevatorRepairTaskView extends VerticalLayout {
 
   private void settingBinder(TextField field, DatePicker datePicker) {
 
-    // BINDER - Style 04: Reference Method
+    // BINDER: Reference Method
     // Permitido pelo 'new Binder<>(Order.class)'
     // Permitido na AUSENCIA de "Validators"
     binderTask.bind(field, ElevatorRepairTask::getTask, ElevatorRepairTask::setTask);
 
-    // binderTask [forField/bind]: "Link" between "field" -> Entity_Attribute
-    // todo:  VALIDATOR: Multiplos Validators
+    // VALIDATOR: Multiplos Validators
     // - Multiplos Validators
+    // - binderTask [forField/bind]: "Link" between "field" -> Entity_Attribute
     binderTask
          .forField(datePicker)
          .withValidator(
@@ -99,7 +99,7 @@ public class ElevatorRepairTaskView extends VerticalLayout {
               REPAIR_TASK_DUEDATE_VALIDATION_MESSAGE
          )
 
-         // todo:  BINDER: Permitido pelo 'new Binder<>(Order.class)'
+         // BINDER: Permitido pelo 'new Binder<>(Order.class)'
          .bind(
               elevatorRepairTask -> datePicker.getValue(), // representa o get
               (dateEntity, newDatePicker) -> dateEntity.setDueDate(newDatePicker.toString())

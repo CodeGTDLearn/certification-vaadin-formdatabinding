@@ -89,12 +89,12 @@ public class ElevatorServiceOrderView extends VerticalLayout {
               new FormLayout.ResponsiveStep("500px", 2)
          );
 
-    Button submitOrder = new Button(ADD_ORDER_BUTTON_LABEL, event -> {
+    var submitOrder = new Button(ADD_ORDER_BUTTON_LABEL, event -> {
       try {
 
         var myElevatorServiceOrder = new ElevatorServiceOrder();
 
-        // todo: BEAN: writeBean: write 'fields-values' in an Object(myOrder)
+        // BEAN: writeBean - write 'fields-values' in an Object(myOrder)
         binder.writeBean(myElevatorServiceOrder);
         processOrder();
       }
@@ -113,29 +113,29 @@ public class ElevatorServiceOrderView extends VerticalLayout {
   private void settingBinder() {
 
     binder
-         // todo:  BINDER: Bind para "propertName"(attributo)
+         // BINDER: Bind para "propertName"(attributo)
          // Permitido pelo 'new Binder<>(Order.class)'
          // Permitido na AUSENCIA de "Validators"
          // Usado qdo o attributo tem BeanValidation
          .bind(customerNameField, "customerName");
 
-    // todo:  VALIDATOR: Vaadin Standard Validator
+    // VALIDATOR: Vaadin Standard Validator
     // - Validator Standard do Vaadin
     binder
          .forField(customerEmailField)
          .withValidator(new EmailValidator(EMAIL_VALIDATION_MESSSAGE))
 
-         // todo:  BINDER: Permitido pelo 'new Binder<>(Order.class)'
+         // BINDER: Permitido pelo 'new Binder<>(Order.class)'
          .bind("customerEmail");
 
 
-    // todo:  VALIDATOR: Lambda Validator for Numbers
+    // VALIDATOR: Lambda Validator for Numbers
     // - Validator customizado com Lambda p/ numbers
     binder
          .forField(elevatorQtdeField)
          .withValidator(quantity -> quantity > 0, QTDE_BIGGER_THAN_ZERO_VALIDATION_MESSSAGE)
 
-         // todo:  BINDER: Permitido pelo 'new Binder<>(Order.class)' or 'new Binder<>()'
+         // BINDER: Permitido pelo 'new Binder<>(Order.class)' or 'new Binder<>()'
          .bind(ElevatorServiceOrder::getElevatorsQuantity,
                ElevatorServiceOrder::setElevatorsQuantity
          );
@@ -147,7 +147,7 @@ public class ElevatorServiceOrderView extends VerticalLayout {
               elevatorServiceOrder.setElevatorCategory(categoryFieldContent)
     );
 
-    // todo:  VALIDATOR: Lambda Validator for Date
+    // VALIDATOR: Lambda Validator for Date
     // - Validator customizado com Lambda p/ data
     binder
          .forField(deadLineField)
@@ -162,7 +162,7 @@ public class ElevatorServiceOrderView extends VerticalLayout {
   private void processOrder() {
 
     // Simulating order processing
-    final String text =
+    var text =
          "Order processed %s - Quantity %s!"
               .formatted(
                    customerNameField.getValue(),
