@@ -3,6 +3,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
+    "@polymer/paper-toggle-button": "^3.0.1",
     "@polymer/polymer": "3.5.1",
     "@vaadin/bundles": "24.4.4",
     "@vaadin/common-frontend": "0.0.19",
@@ -85,7 +86,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "1fd9d343c5f03cfc2093264c1c370706edd5a435ba131f7e047ee66907d0bce9"
+    "hash": "e18535c100257ed40b9a556ce8b78470c9ba57b6aa32077a1d1e87bba7fbb6c5"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -106,6 +107,7 @@
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
-    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles"
+    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
+    "@polymer/paper-toggle-button": "$@polymer/paper-toggle-button"
   }
 }

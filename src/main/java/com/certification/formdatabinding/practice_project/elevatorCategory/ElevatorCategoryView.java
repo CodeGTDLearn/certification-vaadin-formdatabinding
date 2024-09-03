@@ -1,7 +1,7 @@
 package com.certification.formdatabinding.practice_project.elevatorCategory;
 
 import com.certification.formdatabinding.practice_project.MainView;
-import com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCapacityCustomConverter;
+import com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCapacityConverter;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -31,6 +31,7 @@ import static com.certification.formdatabinding.practice_project.viewComponents.
 @Route(value = ELEVATOR_CATEGORY_ROUTE, layout = MainView.class)
 public class ElevatorCategoryView extends VerticalLayout {
 
+  // BINDER: Automatic Binding according Entity-Attribute name
   @PropertyId("categoryName")
   private final TextField categoryField = new TextField();
 
@@ -106,7 +107,7 @@ public class ElevatorCategoryView extends VerticalLayout {
     // CONVERTER: Custom Converter
     binder
          .forField(capacityField)
-         .withConverter(new ElevatorCapacityCustomConverter())
+         .withConverter(new ElevatorCapacityConverter())
          .bind("maxCapacity"); //Bean Attribute
   }
 

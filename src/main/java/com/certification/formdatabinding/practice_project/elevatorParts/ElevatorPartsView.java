@@ -92,6 +92,7 @@ public class ElevatorPartsView extends VerticalLayout {
 
     formLayout
          .setResponsiveSteps(
+
               // Use one column by default
               new ResponsiveStep("0", 1),
 
@@ -137,7 +138,7 @@ public class ElevatorPartsView extends VerticalLayout {
 
     var button = new Button(ADD_PART_BUTTON_LABEL);
 
-    // READONLYHASVALUE: Exiba(ReadOnly) Entity-Data to UI-Items
+    // READ-ONLY-HAS-VALUE: Exiba(ReadOnly) Entity-Data to UI-Items
     var H2_UI_changer = new ReadOnlyHasValue<String>(
          text -> UI_Item_H2.setText(text)
     );

@@ -38,11 +38,11 @@ public class ElevatorClientAddressView extends VerticalLayout {
   //  Automatic Binding according Entity-Attribute name
   private TextField postalCode = new TextField();
 
-  private Binder<ElevatorClientAddress> binder = new Binder<>(ElevatorClientAddress.class);
   private  Grid<ElevatorClientAddress> grid = new Grid<>(ElevatorClientAddress.class);
+  private Binder<ElevatorClientAddress> binder = new Binder<>(ElevatorClientAddress.class);
 
-  private ElevatorClientAddress elevatorClientAddress = new ElevatorClientAddress();
   private List<ElevatorClientAddress> listAdress = new ArrayList<>();
+  private ElevatorClientAddress elevatorClientAddress = new ElevatorClientAddress();
 
   public ElevatorClientAddressView() {
 

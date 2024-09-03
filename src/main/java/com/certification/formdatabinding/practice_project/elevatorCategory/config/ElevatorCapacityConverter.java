@@ -9,7 +9,7 @@ import static com.certification.formdatabinding.practice_project.elevatorCategor
 // CONVERTER  - Style 2.0: Custom Converter
 // - 'convertToPresentation': Converte Bean-Attribute -> ViewField
 // - 'convertToModel'       : Converte ViewField      -> Bean-Attribute
-public class ElevatorCapacityCustomConverter implements Converter<String, Integer> {
+public class ElevatorCapacityConverter implements Converter<String, Integer> {
 
   @Override
   public Result<Integer> convertToModel(String fieldValue, ValueContext context) {
