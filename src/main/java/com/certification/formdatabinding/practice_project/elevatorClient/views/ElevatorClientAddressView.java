@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.certification.formdatabinding.practice_project.utils.MockedDataSourceElevatorCategory.mockedElevatorClientAddress;
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
+import static com.certification.formdatabinding.practice_project.customComponents.UtilComponents.createDivider;
 import static com.certification.formdatabinding.practice_project.appConfig.AppMessages.APP_MESSAGE_COMPLETE_THE_FORM;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.CLIENTS_ADDRESS_ROUTE;
 import static com.certification.formdatabinding.practice_project.elevatorClient.config.ElevatorClientAddressLabels.*;

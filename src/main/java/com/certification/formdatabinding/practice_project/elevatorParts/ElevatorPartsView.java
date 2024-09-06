@@ -1,6 +1,9 @@
 package com.certification.formdatabinding.practice_project.elevatorParts;
 
 import com.certification.formdatabinding.practice_project.MainView;
+import com.certification.formdatabinding.practice_project.customComponents.CustomDataPicker;
+import com.certification.formdatabinding.practice_project.customComponents.CustomToggleButton;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
@@ -15,15 +18,17 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ReadOnlyHasValue;
 import com.vaadin.flow.router.Route;
 
+import java.time.LocalDateTime;
+
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.ELEVATOR_PARTS_ROUTE;
+import static com.certification.formdatabinding.practice_project.customComponents.UtilComponents.createDivider;
+import static com.certification.formdatabinding.practice_project.customComponents.UtilComponents.showNotification;
 import static com.certification.formdatabinding.practice_project.elevatorParts.config.ElevatorPartLabels.*;
 import static com.certification.formdatabinding.practice_project.elevatorParts.config.ElevatorPartTitles.ELEVATORS_PARTS_FORM_TITLE;
 import static com.certification.formdatabinding.practice_project.elevatorParts.config.ElevatorPartTitles.ELEVATORS_PARTS_VIEW_TITLE;
 import static com.certification.formdatabinding.practice_project.elevatorParts.config.ElevatorPartsMessages.MIN_TEXT_DESCRIPTION_MESSSAGE;
 import static com.certification.formdatabinding.practice_project.elevatorParts.config.ElevatorPartsMessages.TEXT_MANUFACTER_MESSSAGE;
 import static com.certification.formdatabinding.practice_project.utils.MockedDataSourceElevatorCategory.randomMockedElevatorPart;
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.showNotification;
 import static com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import static java.lang.Character.isUpperCase;
 
@@ -37,38 +42,78 @@ public class ElevatorPartsView extends VerticalLayout {
   private TextField manufacturerField = new TextField();
   private TextArea descriptionField = new TextArea();
   private IntegerField quantityField = new IntegerField();
-
-  private H2 UI_Item_H2 = new H2();
+  private CustomDataPicker dataPicker = new CustomDataPicker();
+  private Button mostCommonPartsButton = new Button();
+  private H2 displayTextMostCommonPart = new H2();
 
   private ElevatorParts elevatorPart = new ElevatorParts();
 
   public ElevatorPartsView() {
+
+    displayTextMostCommonPart.getStyle()
+                             .setColor("Blue");
 
     settingBinder();
 
     H1 titleView = new H1(ELEVATORS_PARTS_VIEW_TITLE);
     H2 formTitle = new H2(ELEVATORS_PARTS_FORM_TITLE);
 
-    var rowTitles = new HorizontalLayout();
-    UI_Item_H2.getStyle()
-              .setColor("Blue");
-    rowTitles.add(formTitle, UI_Item_H2);
+    var subLine1 = new HorizontalLayout();
+    subLine1.add(formTitle, displayTextMostCommonPart);
+    subLine1.setWidthFull();
+    subLine1.setWidth("80%");
+
+    var subLine2 = createToggleButton(
+         "20%",
+         "Enable 'Most Commn Parts' Button"
+    );
+
+    var row = new HorizontalLayout();
+    row.setWidthFull();
+    row.add(subLine1, subLine2);
+
+    mostCommonPartsButton = createMostCommonPartsButton();
 
     var rowButtons = new HorizontalLayout(
          createSaveDraftButton(),
          createResumeLaterButton(),
-         createMostCommonPartsButton()
+         mostCommonPartsButton
     );
+
     rowButtons.setAlignItems(Alignment.CENTER);
     rowButtons.setWidthFull();
 
     add(
          titleView,
          createDivider(),
-         rowTitles,
+         row,
          createForm(),
          rowButtons
     );
+  }
+
+
+  private HorizontalLayout createToggleButton(
+       String sizePercentual,
+       String label) {
+
+    var subLine2 = new HorizontalLayout();
+    subLine2.setVerticalComponentAlignment(Alignment.CENTER);
+    subLine2.setWidth(sizePercentual);
+
+    var toggleButton = new CustomToggleButton();
+    toggleButton.setValue(true);
+    var toggleButtonLabel = new Text(label);
+    toggleButton
+         .addValueChangeListener(
+              event -> {
+                var newValue = event.getValue();
+
+                mostCommonPartsButton.setEnabled(newValue);
+              });
+
+    subLine2.add(toggleButtonLabel, toggleButton);
+    return subLine2;
   }
 
   private FormLayout createForm() {
@@ -76,6 +121,7 @@ public class ElevatorPartsView extends VerticalLayout {
     partNameField.setPlaceholder(PARTNAME_PLACEHOLDER);
     manufacturerField.setPlaceholder(MANUFACTURER_PLACEHOLDER);
     quantityField.setPlaceholder(QUANTITY_PLACEHOLDER);
+    dataPicker.setValue(LocalDateTime.now());
 
     descriptionField.setPlaceholder(DESCRIPTION_PLACEHOLDER);
     descriptionField.setHeight("10em");
@@ -87,6 +133,7 @@ public class ElevatorPartsView extends VerticalLayout {
               partNameField,
               manufacturerField,
               quantityField,
+              dataPicker,
               descriptionField
          );
 
@@ -97,11 +144,11 @@ public class ElevatorPartsView extends VerticalLayout {
               new ResponsiveStep("0", 1),
 
               // Use 3 columns, if layout's width exceeds 500px
-              new ResponsiveStep("500px", 3)
+              new ResponsiveStep("500px", 4)
          );
 
     // Stretch the username field over the 3 columns
-    formLayout.setColspan(descriptionField, 3);
+    formLayout.setColspan(descriptionField, 4);
 
     return formLayout;
   }
@@ -113,7 +160,8 @@ public class ElevatorPartsView extends VerticalLayout {
     binder.bind(descriptionField, "description");
 
     // BINDER: BeanValidationBinder (check Bean Validation)
-    binder.forField(quantityField).bind("quantity");
+    binder.forField(quantityField)
+          .bind("quantity");
 
     binder
          .forField(descriptionField)
@@ -140,7 +188,7 @@ public class ElevatorPartsView extends VerticalLayout {
 
     // READ-ONLY-HAS-VALUE: Exiba(ReadOnly) Entity-Data to UI-Items
     var H2_UI_changer = new ReadOnlyHasValue<String>(
-         text -> UI_Item_H2.setText(text)
+         text -> displayTextMostCommonPart.setText(text)
     );
 
     binder

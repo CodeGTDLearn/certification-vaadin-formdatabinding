@@ -28,7 +28,7 @@ import static com.certification.formdatabinding.practice_project.elevatorService
 import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ElevatorServiceOrderTitles.SERVCE_ORDER_FORM_DETAILS_TITLE;
 import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ElevatorServiceOrderTitles.SERVICE_ORDER_VIEW_TITLE;
 import static com.certification.formdatabinding.practice_project.elevatorServiceOrder.config.ElevatorServiceOrderValidationMessages.*;
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
+import static com.certification.formdatabinding.practice_project.customComponents.UtilComponents.createDivider;
 
 @Route(value = ORDERS_ROUTE, layout = MainView.class)
 @RouteAlias(value = "", layout = MainView.class)

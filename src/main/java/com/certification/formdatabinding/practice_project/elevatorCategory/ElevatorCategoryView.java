@@ -25,7 +25,7 @@ import static com.certification.formdatabinding.practice_project.elevatorCategor
 import static com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCategoryMessages.ELEVATOR_SPEED_VALIDATION_MESSAGE;
 import static com.certification.formdatabinding.practice_project.elevatorCategory.config.ElevatorCategoryTitles.*;
 import static com.certification.formdatabinding.practice_project.utils.MockedDataSourceElevatorCategory.randomMockedElevatorCategory;
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
+import static com.certification.formdatabinding.practice_project.customComponents.UtilComponents.createDivider;
 
 
 @Route(value = ELEVATOR_CATEGORY_ROUTE, layout = MainView.class)

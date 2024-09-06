@@ -1,11 +1,11 @@
-package com.certification.formdatabinding.practice_project.viewComponents;
+package com.certification.formdatabinding.practice_project.customComponents;
 
 import com.vaadin.flow.component.html.Div;
 
 import static com.vaadin.flow.component.notification.Notification.Position;
 import static com.vaadin.flow.component.notification.Notification.show;
 
-public class CustomComponents {
+public class UtilComponents {
   public static Div createDivider() {
 
     Div divider = new Div();

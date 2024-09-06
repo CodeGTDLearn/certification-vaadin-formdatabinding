@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.certification.formdatabinding.practice_project.viewComponents.CustomComponents.createDivider;
+import static com.certification.formdatabinding.practice_project.customComponents.UtilComponents.createDivider;
 import static com.certification.formdatabinding.practice_project.appConfig.AppRoutes.REPAIR_TASKS;
 import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.ElevatorRepairTasksLabels.*;
 import static com.certification.formdatabinding.practice_project.elevatorRepairTasks.config.ElevatorRepairTasksTitles.*;
