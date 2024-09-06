@@ -1,0 +1,25 @@
+package com.certification.formdatabinding.elevatorsMaintenance.utils.customViewComponents.my_sec_comp;
+
+import com.vaadin.flow.component.customfield.CustomField;
+
+public class CustomMaterialSwitchd extends CustomField<Boolean> {
+
+  private SwitchMaterial switchMaterial = new SwitchMaterial();
+
+  public CustomMaterialSwitchd() {
+
+    add(switchMaterial);
+  }
+
+  @Override
+  protected Boolean generateModelValue() {
+
+    return switchMaterial.getValue();
+  }
+
+  @Override
+  protected void setPresentationValue(Boolean newPresentationValue) {
+
+    switchMaterial.setValue(newPresentationValue);
+  }
+}

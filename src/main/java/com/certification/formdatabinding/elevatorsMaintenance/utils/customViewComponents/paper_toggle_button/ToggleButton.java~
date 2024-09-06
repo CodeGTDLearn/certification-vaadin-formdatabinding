@@ -1,0 +1,15 @@
+package com.certification.formdatabinding.elevatorsMaintenance.utils.customViewComponents.paper_toggle_button;
+
+import com.vaadin.flow.component.AbstractSinglePropertyField;
+import com.vaadin.flow.component.dependency.JsModule;
+import 
+
+@JsModule("@polymer/paper-toggle-button/paper-toggle-button.js")
+@Tag("paper-toggle-button")
+public class ToggleButton extends AbstractSinglePropertyField<ToggleButton, Boolean> {
+
+  public ToggleButton() {
+
+    super("checked", false, false);
+  }
+}

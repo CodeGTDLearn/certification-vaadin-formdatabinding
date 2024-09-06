@@ -1,0 +1,26 @@
+package com.certification.formdatabinding.elevatorsMaintenance.web_components;
+
+import com.vaadin.flow.component.AbstractSinglePropertyField;
+import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.Tag;
+
+// Importação de um web component
+@JsModule("https://unpkg.com/@material/web@1.2.1/checkbox/checkbox.js")
+@Tag("md-checkbox")
+public class MaterialCheckboxField extends AbstractSinglePropertyField<MaterialCheckboxField, Boolean> {
+    
+    public MaterialCheckboxField(String label) {
+        // Chamada para o construtor do pai, definindo o nome da propriedade 
+        // e o tipo de valor padrão (Boolean)
+        super("checked", false, false);
+        
+        // Configura o label do checkbox
+        setAttribute("label", label);
+    }
+
+    // Método para personalizar o valor inicial
+    public MaterialCheckboxField withValue(boolean initialValue) {
+        setValue(initialValue);
+        return this;
+    }
+}

@@ -8,7 +8,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="60ffdba9-7390-4c4b-b3ea-8e64d0888ec0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/certification/formdatabinding/practice_project/elevatorServiceOrder/ElevatorServiceOrderView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/certification/formdatabinding/practice_project/elevatorServiceOrder/ElevatorServiceOrderView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/certification/formdatabinding/elevatorsMaintenance/utils/customViewComponents/my_sec_comp/CustomMaterialSwitch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/certification/formdatabinding/elevatorsMaintenance/utils/customViewComponents/my_sec_comp/MaterialSwitch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/certification/formdatabinding/elevatorsMaintenance/utils/customViewComponents/paper_toggle_button/PolymerToggleButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/certification/formdatabinding/elevatorsMaintenance/elevatorParts/ElevatorPartsView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/certification/formdatabinding/elevatorsMaintenance/elevatorParts/ElevatorPartsView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/certification/formdatabinding/elevatorsMaintenance/utils/customViewComponents/CustomToggleButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/certification/formdatabinding/elevatorsMaintenance/utils/customViewComponents/paper_toggle_button/CustomToggleButton.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,16 +62,21 @@
     "Application.AppDriver.executor": "Run",
     "Maven.formdatabinding [clean].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "ToolWindow.Run.ShowToolbar": "false",
     "ToolWindowDebug.ShowToolbar": "false",
     "ToolWindowRun.ShowToolbar": "false",
     "com.codeium.enabled": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/SERVIDOR/Downloads/create-forms/certification-vaadin-formdatabinding",
+    "last_opened_file_path": "C:/Users/SERVIDOR/Projects/certification-vaadin-formdatabinding/src/main/java/com/certification/formdatabinding/elevatorsMaintenance/utils/customViewComponents/my_sec_comp",
     "settings.editor.selected.configurable": "AtomSelectConfig"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\SERVIDOR\Projects\certification-vaadin-formdatabinding\src\main\java\com\certification\formdatabinding\elevatorsMaintenance\utils\customViewComponents\my_sec_comp" />
+      <recent name="C:\Users\SERVIDOR\Projects\certification-vaadin-formdatabinding\src\main\java\com\certification\formdatabinding\elevatorsMaintenance\utils\customViewComponents" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.certification.formdatabinding.practice_project.customComponents" />
     </key>

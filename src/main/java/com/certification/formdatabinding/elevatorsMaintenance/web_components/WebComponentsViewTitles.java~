@@ -1,0 +1,7 @@
+package com.certification.formdatabinding.elevatorsMaintenance.web_components;
+
+public class WebComponentsViewTitles {
+
+  public static final String WEB_COMPONENT_VIEW_TITLE = "Web Component Testing";
+  public static final String WEB_COMPONENT_VIEW_FORM_TITLE = "Web Components For";
+}

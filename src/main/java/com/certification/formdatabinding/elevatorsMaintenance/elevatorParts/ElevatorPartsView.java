@@ -2,7 +2,8 @@ package com.certification.formdatabinding.elevatorsMaintenance.elevatorParts;
 
 import com.certification.formdatabinding.elevatorsMaintenance.MainView;
 import com.certification.formdatabinding.elevatorsMaintenance.utils.customViewComponents.CustomDataPicker;
-import com.certification.formdatabinding.elevatorsMaintenance.utils.customViewComponents.CustomToggleButton;
+import com.certification.formdatabinding.elevatorsMaintenance.utils.customViewComponents.my_sec_comp.CustomMaterialSwitch;
+import com.certification.formdatabinding.elevatorsMaintenance.utils.customViewComponents.paper_toggle_button.CustomToggleButton;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -45,6 +46,7 @@ public class ElevatorPartsView extends VerticalLayout {
   private CustomDataPicker dataPicker = new CustomDataPicker();
   private Button mostCommonPartsButton = new Button();
   private H2 displayTextMostCommonPart = new H2();
+  private Button resumeLaterButton = new Button();
 
   private ElevatorParts elevatorPart = new ElevatorParts();
 
@@ -61,16 +63,21 @@ public class ElevatorPartsView extends VerticalLayout {
     var subLine1 = new HorizontalLayout();
     subLine1.add(formTitle, displayTextMostCommonPart);
     subLine1.setWidthFull();
-    subLine1.setWidth("80%");
+    subLine1.setWidth("50%");
 
-    var subLine2 = createToggleButton(
-         "20%",
-         "Enable 'Most Commn Parts' Button"
+    var subLine2 = createMaterialSwitch(
+         "25%",
+         "Enable 'Resume Later'"
+    );
+
+    var subLine3 = createToggleButton(
+         "25%",
+         "Enable 'Most Common Parts' Button"
     );
 
     var row = new HorizontalLayout();
     row.setWidthFull();
-    row.add(subLine1, subLine2);
+    row.add(subLine1, subLine2, subLine3);
 
     mostCommonPartsButton = createMostCommonPartsButton();
 
@@ -97,9 +104,9 @@ public class ElevatorPartsView extends VerticalLayout {
        String sizePercentual,
        String label) {
 
-    var subLine2 = new HorizontalLayout();
-    subLine2.setVerticalComponentAlignment(Alignment.CENTER);
-    subLine2.setWidth(sizePercentual);
+    var row = new HorizontalLayout();
+    row.setVerticalComponentAlignment(Alignment.CENTER);
+    row.setWidth(sizePercentual);
 
     var toggleButton = new CustomToggleButton();
     toggleButton.setValue(true);
@@ -112,8 +119,36 @@ public class ElevatorPartsView extends VerticalLayout {
                 mostCommonPartsButton.setEnabled(newValue);
               });
 
-    subLine2.add(toggleButtonLabel, toggleButton);
-    return subLine2;
+    row.add(toggleButtonLabel, toggleButton);
+
+    return row;
+  }
+
+  private HorizontalLayout createMaterialSwitch(
+       String sizePercentual,
+       String label) {
+
+    var row = new HorizontalLayout();
+    row.setVerticalComponentAlignment(Alignment.CENTER);
+    row.setWidth(sizePercentual);
+
+    var aSwitch = new CustomMaterialSwitch();
+    
+    aSwitch.setValue(true);
+
+    var aSwitchLabel = new Text(label);
+
+    aSwitch
+         .addValueChangeListener(
+              event -> {
+                var newValue = event.getValue();
+
+                resumeLaterButton.setEnabled(newValue);
+              });
+
+    row.add(aSwitchLabel, aSwitch);
+
+    return row;
   }
 
   private FormLayout createForm() {
@@ -221,18 +256,18 @@ public class ElevatorPartsView extends VerticalLayout {
 
   private Button createResumeLaterButton() {
 
-    var button = new Button(RESUME_LATER_BUTTON_LABEL);
+    resumeLaterButton = new Button(RESUME_LATER_BUTTON_LABEL);
 
     showBean("Antes (Forced): ");
 
     // BEAN: writeBeanAsDraft (Forced)
     // - Salva os campos validos + invalidos(salva mesmo/incluindo a invalidez)
-    button.addClickListener(event -> {
+    resumeLaterButton.addClickListener(event -> {
       binder.writeBeanAsDraft(elevatorPart, true);
       showBean("Apos (Forced): ");
     });
 
-    return button;
+    return resumeLaterButton;
   }
 
   private void showBean(String moment) {

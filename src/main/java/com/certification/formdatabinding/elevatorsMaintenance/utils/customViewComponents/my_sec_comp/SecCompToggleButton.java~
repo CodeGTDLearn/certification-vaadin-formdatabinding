@@ -1,0 +1,15 @@
+package com.certification.formdatabinding.elevatorsMaintenance.utils.customViewComponents.my_sec_comp;
+
+import com.vaadin.flow.component.AbstractSinglePropertyField;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.dependency.JsModule;
+
+@JsModule("@material/web/switch/switch.js")
+@Tag("switch")
+public class SwitchMEterial extends AbstractSinglePropertyField<SwitchMEterial, Boolean> {
+
+  public SwitchMEterial() {
+
+    super("checked", false, false);
+  }
+}
